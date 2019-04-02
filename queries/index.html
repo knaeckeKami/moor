@@ -1,0 +1,315 @@
+<!DOCTYPE html>
+
+<html lang="en-us">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=Edge">
+
+  <title>Writing queries - Moor</title>
+  <link rel="stylesheet" href="https://simolus3.github.io/moor/assets/css/just-the-docs.css">
+  
+  <script type="text/javascript" src="https://simolus3.github.io/moor/assets/js/vendor/lunr.min.js"></script>
+  
+  <script type="text/javascript" src="https://simolus3.github.io/moor/assets/js/just-the-docs.js"></script>
+
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+</head>
+
+<body>
+
+  <div class="page-wrap">
+    <div class="side-bar">
+      <a href="https://simolus3.github.io/moor" class="site-title fs-6 lh-tight">Moor</a>
+      <span class="fs-3"><button class="js-main-nav-trigger navigation-list-toggle btn btn-outline" type="button" data-text-toggle="Hide">Menu</button></span>
+      <div class="navigation main-nav js-main-nav">
+        <nav role="navigation" aria-label="Main navigation">
+  <ul class="navigation-list">
+    
+    
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+          <li class="navigation-list-item">
+            
+            <a href="https://simolus3.github.io/moor/" class="navigation-list-link">Home</a>
+            
+          </li>
+        
+      
+    
+      
+        
+          <li class="navigation-list-item">
+            
+            <a href="https://simolus3.github.io/moor/getting-started/" class="navigation-list-link">Getting started</a>
+            
+          </li>
+        
+      
+    
+      
+        
+          <li class="navigation-list-item active">
+            
+            <a href="https://simolus3.github.io/moor/queries/" class="navigation-list-link active">Writing queries</a>
+            
+              
+              <ul class="navigation-list-child-list ">
+                
+                  
+                
+                  
+                    <li class="navigation-list-item ">
+                      
+                      <a href="https://simolus3.github.io/moor/docs/writing_queries/custom_queries.html" class="navigation-list-link">Custom queries</a>
+                      
+                    </li>
+                  
+                
+                  
+                    <li class="navigation-list-item ">
+                      
+                      <a href="https://simolus3.github.io/moor/queries/joins" class="navigation-list-link">Table joins</a>
+                      
+                    </li>
+                  
+                
+                  
+                
+                  
+                
+                  
+                
+                  
+                
+                  
+                
+                  
+                
+              </ul>
+            
+          </li>
+        
+      
+    
+      
+        
+          <li class="navigation-list-item">
+            
+            <a href="https://simolus3.github.io/moor/transactions" class="navigation-list-link">Transactions</a>
+            
+          </li>
+        
+      
+    
+      
+        
+          <li class="navigation-list-item">
+            
+            <a href="https://simolus3.github.io/moor/migrations/" class="navigation-list-link">Migrations</a>
+            
+          </li>
+        
+      
+    
+      
+        
+          <li class="navigation-list-item">
+            
+            <a href="https://simolus3.github.io/moor/daos/" class="navigation-list-link">Modularity with DAOs</a>
+            
+          </li>
+        
+      
+    
+  </ul>
+</nav>
+
+      </div>
+      <footer role="contentinfo" class="site-footer">
+        <p class="text-small text-grey-dk-000 mb-0">This site uses <a href="https://github.com/pmarsceill/just-the-docs">Just the Docs</a>, a documentation theme for Jekyll.</p>
+      </footer>
+    </div>
+    <div class="main-content-wrap js-main-content" tabindex="0">
+      <div class="page-header">
+        <div class="main-content">
+          
+          <div class="search js-search">
+            <div class="search-input-wrap">
+              <input type="text" class="js-search-input search-input" tabindex="0" placeholder="Search Moor" aria-label="Search Moor" autocomplete="off">
+              <svg width="14" height="14" viewBox="0 0 28 28" xmlns="http://www.w3.org/2000/svg" class="search-icon"><title>Search</title><g fill-rule="nonzero"><path d="M17.332 20.735c-5.537 0-10-4.6-10-10.247 0-5.646 4.463-10.247 10-10.247 5.536 0 10 4.601 10 10.247s-4.464 10.247-10 10.247zm0-4c3.3 0 6-2.783 6-6.247 0-3.463-2.7-6.247-6-6.247s-6 2.784-6 6.247c0 3.464 2.7 6.247 6 6.247z"/><path d="M11.672 13.791L.192 25.271 3.02 28.1 14.5 16.62z"/></g></svg>
+            </div>
+            <div class="js-search-results search-results-wrap"></div>
+          </div>
+          
+          
+          <ul class="list-style-none text-small mt-md-1 mb-md-1 pb-4 pb-md-0 js-aux-nav aux-nav">
+            <li><a href="https://pub.dartlang.org/packages/moor_flutter"><img src="https://img.shields.io/pub/v/moor_flutter.svg" /></a></li>
+          </ul> 
+        </div>
+      </div>
+      <div class="main-content">
+        
+          
+        
+        <div id="main-content" class="page-content" role="main">
+          <p><strong>Note</strong>: This assumes that you already have your database class ready. 
+Follow the <a href="https://simolus3.github.io/moor/getting-started">instructions</a> over here on how to do that.</p>
+
+<h1 id="writing-queries">Writing queries</h1>
+<p>The examples here use the tables defined <a href="https://simolus3.github.io/moor/getting-started">here</a>.
+For each table you’ve specified in the <code class="highlighter-rouge">@UseMoor</code> annotation on your database class,
+a corresponding getter for a table will be generated. That getter can be used to
+run statements:</p>
+<div class="language-dart highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">// inside the database class, the `todos` getter has been created by moor.</span>
+
+<span class="c1">// loads all todo entries</span>
+<span class="n">Future</span><span class="o">&lt;</span><span class="n">List</span><span class="o">&lt;</span><span class="n">Todo</span><span class="o">&gt;&gt;</span> <span class="kd">get</span> <span class="n">allTodoEntries</span> <span class="o">=&gt;</span> <span class="n">select</span><span class="o">(</span><span class="n">todos</span><span class="o">).</span><span class="na">get</span><span class="o">();</span>
+
+<span class="c1">// watches all todo entries in a given category. The stream will automatically</span>
+<span class="c1">// emit new items whenever the underlying data changes.</span>
+<span class="n">Stream</span><span class="o">&lt;</span><span class="n">List</span><span class="o">&lt;</span><span class="n">TodoEntry</span><span class="o">&gt;&gt;</span> <span class="n">watchEntriesInCategory</span><span class="o">(</span><span class="n">Category</span> <span class="n">c</span><span class="o">)</span> <span class="o">{</span>
+  <span class="k">return</span> <span class="o">(</span><span class="n">select</span><span class="o">(</span><span class="n">todos</span><span class="o">)..</span><span class="na">where</span><span class="o">((</span><span class="n">t</span><span class="o">)</span> <span class="o">=&gt;</span> <span class="n">t</span><span class="o">.</span><span class="na">category</span><span class="o">.</span><span class="na">equals</span><span class="o">(</span><span class="n">c</span><span class="o">.</span><span class="na">id</span><span class="o">))).</span><span class="na">watch</span><span class="o">();</span>
+<span class="o">}</span>
+</code></pre></div></div>
+<h2 id="select-statements">Select statements</h2>
+<p>You can create <code class="highlighter-rouge">select</code> statements by starting them with <code class="highlighter-rouge">select(tableName)</code>, where the 
+table name
+is a field generated for you by moor. Each table used in a database will have a matching field
+to run queries against. Any query can be run once with <code class="highlighter-rouge">get()</code> or be turned into an auto-updating
+stream using <code class="highlighter-rouge">watch()</code>.</p>
+<h3 id="where">Where</h3>
+<p>You can apply filters to a query by calling <code class="highlighter-rouge">where()</code>. The where method takes a function that
+should map the given table to an <code class="highlighter-rouge">Expression</code> of boolean. A common way to create such expression
+is by using <code class="highlighter-rouge">equals</code> on expressions. Integer columns can also be compared with <code class="highlighter-rouge">isBiggerThan</code>
+and <code class="highlighter-rouge">isSmallerThan</code>. You can compose expressions using <code class="highlighter-rouge">and(a, b), or(a, b)</code> and <code class="highlighter-rouge">not(a)</code>.</p>
+<h3 id="limit">Limit</h3>
+<p>You can limit the amount of results returned by calling <code class="highlighter-rouge">limit</code> on queries. The method accepts
+the amount of rows to return and an optional offset.</p>
+<h3 id="ordering">Ordering</h3>
+<p>You can use the <code class="highlighter-rouge">orderBy</code> method on the select statement. It expects a list of functions that extract the individual
+ordering terms from the table.</p>
+<div class="language-dart highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">Future</span><span class="o">&lt;</span><span class="n">List</span><span class="o">&lt;</span><span class="n">TodoEntry</span><span class="o">&gt;&gt;</span> <span class="n">sortEntriesAlphabetically</span><span class="o">()</span> <span class="o">{</span>
+  <span class="k">return</span> <span class="o">(</span><span class="n">select</span><span class="o">(</span><span class="n">todos</span><span class="o">)..</span><span class="na">orderBy</span><span class="o">([(</span><span class="n">t</span><span class="o">)</span> <span class="o">=&gt;</span> <span class="n">OrderingTerm</span><span class="o">(</span><span class="nl">expression:</span> <span class="n">t</span><span class="o">.</span><span class="na">title</span><span class="o">)])).</span><span class="na">get</span><span class="o">();</span>
+<span class="o">}</span>
+</code></pre></div></div>
+<p>You can also reverse the order by setting the <code class="highlighter-rouge">mode</code> property of the <code class="highlighter-rouge">OrderingTerm</code> to
+<code class="highlighter-rouge">OrderingMode.desc</code>.</p>
+<h2 id="updates-and-deletes">Updates and deletes</h2>
+<p>You can use the generated <code class="highlighter-rouge">row</code> class to update individual fields of any row:</p>
+<div class="language-dart highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">Future</span> <span class="nf">moveImportantTasksIntoCategory</span><span class="p">(</span><span class="n">Category</span> <span class="n">target</span><span class="o">)</span> <span class="o">{</span>
+  <span class="c1">// use update(...).write when you have a custom where clause and want to update</span>
+  <span class="c1">// only the columns that you specify (here, only "category" will be updated, the</span>
+  <span class="c1">// title and description of the rows affected will be left unchanged).</span>
+  <span class="c1">// Notice that you can't set fields back to null with this method.</span>
+  <span class="k">return</span> <span class="o">(</span><span class="n">update</span><span class="o">(</span><span class="n">todos</span><span class="o">)</span>
+      <span class="o">..</span><span class="na">where</span><span class="o">((</span><span class="n">t</span><span class="o">)</span> <span class="o">=&gt;</span> <span class="n">t</span><span class="o">.</span><span class="na">title</span><span class="o">.</span><span class="na">like</span><span class="o">(</span><span class="s">'%Important%'</span><span class="o">))</span>
+    <span class="o">).</span><span class="na">write</span><span class="o">(</span><span class="n">TodoEntry</span><span class="o">(</span>
+      <span class="nl">category:</span> <span class="n">target</span><span class="o">.</span><span class="na">id</span>
+    <span class="o">),</span>
+  <span class="o">);</span>
+<span class="o">}</span>
+
+<span class="n">Future</span> <span class="nf">update</span><span class="p">(</span><span class="n">TodoEntry</span> <span class="n">entry</span><span class="o">)</span> <span class="o">{</span>
+  <span class="c1">// using replace will update all fields from the entry that are not marked as a primary key.</span>
+  <span class="c1">// it will also make sure that only the entry with the same primary key will be updated.</span>
+  <span class="c1">// Here, this means that the row that has the same id as entry will be updated to reflect</span>
+  <span class="c1">// the entry's title, content and category. Unlike write, this supports setting columns back</span>
+  <span class="c1">// to null. As it set's its where clause automatically, it can not be used together with where.</span>
+  <span class="k">return</span> <span class="n">update</span><span class="o">(</span><span class="n">todos</span><span class="o">).</span><span class="na">replace</span><span class="o">(</span><span class="n">entry</span><span class="o">);</span>
+<span class="o">}</span>
+
+<span class="n">Future</span> <span class="nf">feelingLazy</span><span class="p">(</span><span class="o">)</span> <span class="o">{</span>
+  <span class="c1">// delete the oldest nine entries</span>
+  <span class="k">return</span> <span class="o">(</span><span class="n">delete</span><span class="o">(</span><span class="n">todos</span><span class="o">)..</span><span class="na">where</span><span class="o">((</span><span class="n">t</span><span class="o">)</span> <span class="o">=&gt;</span> <span class="n">t</span><span class="o">.</span><span class="na">id</span><span class="o">.</span><span class="na">isSmallerThanValue</span><span class="o">(</span><span class="mi">10</span><span class="o">))).</span><span class="na">go</span><span class="o">();</span>
+<span class="o">}</span>
+</code></pre></div></div>
+<p><strong>⚠️ Caution:</strong> If you don’t explicitly add a <code class="highlighter-rouge">where</code> clause on updates or deletes, 
+the statement will affect all rows in the table!</p>
+
+<h2 id="inserts">Inserts</h2>
+<p>You can very easily insert any valid object into tables:</p>
+<div class="language-dart highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">// returns the generated id</span>
+<span class="n">Future</span><span class="o">&lt;</span><span class="kt">int</span><span class="o">&gt;</span> <span class="n">addTodoEntry</span><span class="o">(</span><span class="n">Todo</span> <span class="n">entry</span><span class="o">)</span> <span class="o">{</span>
+  <span class="k">return</span> <span class="n">into</span><span class="o">(</span><span class="n">todos</span><span class="o">).</span><span class="na">insert</span><span class="o">(</span><span class="n">entry</span><span class="o">);</span>
+<span class="o">}</span>
+</code></pre></div></div>
+<p>All row classes generated will have a constructor that can be used to create objects:</p>
+<div class="language-dart highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">addTodoEntry</span><span class="o">(</span>
+  <span class="n">Todo</span><span class="o">(</span>
+    <span class="nl">title:</span> <span class="s">'Important task'</span><span class="o">,</span>
+    <span class="nl">content:</span> <span class="s">'Refactor persistence code'</span><span class="o">,</span>
+  <span class="o">),</span>
+<span class="o">);</span>
+</code></pre></div></div>
+<p>If a column is nullable or has a default value (this includes auto-increments), the field
+can be omitted. All other fields must be set and non-null. The <code class="highlighter-rouge">insert</code> method will throw
+otherwise.</p>
+
+
+
+          
+          <hr>
+          <h2 class="text-delta">Table of contents</h2>
+          
+          <ul>
+            
+              
+            
+              
+              <li>
+                <a href="https://simolus3.github.io/moor/docs/writing_queries/custom_queries.html">Custom queries</a>
+              </li>
+              
+            
+              
+              <li>
+                <a href="https://simolus3.github.io/moor/queries/joins">Table joins</a>
+              </li>
+              
+            
+              
+            
+              
+            
+              
+            
+              
+            
+              
+            
+              
+            
+              
+            
+              
+            
+              
+            
+          </ul>
+          
+
+          <hr>
+          <span class="fs-2">
+              Was this page helpful? Please
+              
+              
+              <a href="https://github.com/simolus3/moor/issues/new?body=From+documentation+URL%3A+https%3A%2F%2Fsimolus3.github.io%2Fmoor%2Fqueries%2F">report an issue</a>
+              if you have questions or run into problems.
+          </span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</body>
+</html>
