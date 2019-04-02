@@ -1,0 +1,296 @@
+<!DOCTYPE html>
+
+<html lang="en-us">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=Edge">
+
+  <title>Home - Moor</title>
+  <link rel="stylesheet" href="/assets/css/just-the-docs.css">
+  
+  <script type="text/javascript" src="/assets/js/vendor/lunr.min.js"></script>
+  
+  <script type="text/javascript" src="/assets/js/just-the-docs.js"></script>
+
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+</head>
+
+<body>
+
+  <div class="page-wrap">
+    <div class="side-bar">
+      <a href="" class="site-title fs-6 lh-tight">Moor</a>
+      <span class="fs-3"><button class="js-main-nav-trigger navigation-list-toggle btn btn-outline" type="button" data-text-toggle="Hide">Menu</button></span>
+      <div class="navigation main-nav js-main-nav">
+        <nav role="navigation" aria-label="Main navigation">
+  <ul class="navigation-list">
+    
+    
+      
+    
+      
+        
+      
+    
+      
+        
+          <li class="navigation-list-item active">
+            
+            <a href="/" class="navigation-list-link active">Home</a>
+            
+          </li>
+        
+      
+    
+      
+        
+          <li class="navigation-list-item">
+            
+            <a href="/getting-started/" class="navigation-list-link">Getting started</a>
+            
+          </li>
+        
+      
+    
+      
+        
+          <li class="navigation-list-item">
+            
+            <a href="/writing-queries/" class="navigation-list-link">Writing queries</a>
+            
+              
+              <ul class="navigation-list-child-list ">
+                
+                  
+                
+                  
+                    <li class="navigation-list-item ">
+                      
+                      <a href="/docs/writing_queries/custom_queries.html" class="navigation-list-link">Custom queries</a>
+                      
+                    </li>
+                  
+                
+                  
+                
+                  
+                
+                  
+                
+                  
+                
+                  
+                
+                  
+                
+              </ul>
+            
+          </li>
+        
+      
+    
+      
+        
+          <li class="navigation-list-item">
+            
+            <a href="/docs/transactions.html" class="navigation-list-link">Transactions</a>
+            
+          </li>
+        
+      
+    
+      
+        
+          <li class="navigation-list-item">
+            
+            <a href="/migrations/" class="navigation-list-link">Migrations</a>
+            
+          </li>
+        
+      
+    
+      
+        
+          <li class="navigation-list-item">
+            
+            <a href="/daos/" class="navigation-list-link">Modularity with DAOs</a>
+            
+          </li>
+        
+      
+    
+  </ul>
+</nav>
+
+      </div>
+      <footer role="contentinfo" class="site-footer">
+        <p class="text-small text-grey-dk-000 mb-0">This site uses <a href="https://github.com/pmarsceill/just-the-docs">Just the Docs</a>, a documentation theme for Jekyll.</p>
+      </footer>
+    </div>
+    <div class="main-content-wrap js-main-content" tabindex="0">
+      <div class="page-header">
+        <div class="main-content">
+          
+          <div class="search js-search">
+            <div class="search-input-wrap">
+              <input type="text" class="js-search-input search-input" tabindex="0" placeholder="Search Moor" aria-label="Search Moor" autocomplete="off">
+              <svg width="14" height="14" viewBox="0 0 28 28" xmlns="http://www.w3.org/2000/svg" class="search-icon"><title>Search</title><g fill-rule="nonzero"><path d="M17.332 20.735c-5.537 0-10-4.6-10-10.247 0-5.646 4.463-10.247 10-10.247 5.536 0 10 4.601 10 10.247s-4.464 10.247-10 10.247zm0-4c3.3 0 6-2.783 6-6.247 0-3.463-2.7-6.247-6-6.247s-6 2.784-6 6.247c0 3.464 2.7 6.247 6 6.247z"/><path d="M11.672 13.791L.192 25.271 3.02 28.1 14.5 16.62z"/></g></svg>
+            </div>
+            <div class="js-search-results search-results-wrap"></div>
+          </div>
+          
+          
+          <ul class="list-style-none text-small mt-md-1 mb-md-1 pb-4 pb-md-0 js-aux-nav aux-nav">
+            <li><a href="https://pub.dartlang.org/packages/moor_flutter"><img src="https://img.shields.io/pub/v/moor_flutter.svg" /></a></li>
+          </ul> 
+        </div>
+      </div>
+      <div class="main-content">
+        
+        <div id="main-content" class="page-content" role="main">
+          <h1 class="fs-9" id="moor">Moor</h1>
+
+<p class="fs-6 fw-300">Moor is an easy to use, reactive persistence library for Flutter apps. Define your
+database tables in pure Dart and enjoy a fluent query API, auto-updating streams
+and more!</p>
+
+<p><a href="https://travis-ci.com/simolus3/moor"><img src="https://travis-ci.com/simolus3/moor.svg?token=u4VnFEE5xnWVvkE6QsqL&amp;branch=master" alt="Build Status" /></a>
+<a href="https://codecov.io/gh/simolus3/moor"><img src="https://codecov.io/gh/simolus3/moor/branch/master/graph/badge.svg" alt="codecov" /></a></p>
+
+<p><a href="/getting-started/" class="btn btn-green fs-5 mb-4 mb-md-0 mr-2">Get started now</a>
+<a href="https://github.com/simolus3/moor" class="btn btn-outline fs-5 mb-4 mb-md-0 mr-2">View on GitHub</a></p>
+
+<hr />
+
+<h2 id="getting-started">Getting started</h2>
+<h3 id="adding-the-dependency">Adding the dependency</h3>
+<p>First, let’s add moor to your project’s <code class="highlighter-rouge">pubspec.yaml</code>.
+At the moment, the current version of <code class="highlighter-rouge">moor_flutter</code> is <a href="https://pub.dartlang.org/packages/moor_flutter"><img src="https://img.shields.io/pub/v/moor_flutter.svg" alt="Flutter version" /></a> and the current version of <code class="highlighter-rouge">moor_generator</code> is <a href="https://pub.dartlang.org/packages/moor_generator"><img src="https://img.shields.io/pub/v/moor_generator.svg" alt="Generator version" /></a></p>
+
+<div class="language-yaml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="na">dependencies</span><span class="pi">:</span>
+  <span class="na">moor_flutter</span><span class="pi">:</span> <span class="c1"># use the latest version</span>
+
+<span class="na">dev_dependencies</span><span class="pi">:</span>
+  <span class="na">moor_generator</span><span class="pi">:</span> <span class="c1"># use the latest version</span>
+  <span class="na">build_runner</span><span class="pi">:</span> 
+</code></pre></div></div>
+<p>We’re going to use the <code class="highlighter-rouge">moor_flutter</code> library to specify tables and access the database. The
+<code class="highlighter-rouge">moor_generator</code> library will take care of generating the necessary code so the
+library knows how your table structure looks like.</p>
+
+<h3 id="declaring-tables">Declaring tables</h3>
+<p>Using moor, you can model the structure of your tables with simple dart code:</p>
+<div class="language-dart highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">import</span> <span class="s">'package:moor_flutter/moor_flutter.dart'</span><span class="o">;</span>
+
+<span class="c1">// assuming that your file is called filename.dart. This will give an error at first,</span>
+<span class="c1">// but it's needed for moor to know about the generated code</span>
+<span class="kn">part</span> <span class="s">'filename.g.dart'</span><span class="o">;</span> 
+
+<span class="c1">// this will generate a table called "todos" for us. The rows of that table will</span>
+<span class="c1">// be represented by a class called "Todo".</span>
+<span class="kd">class</span> <span class="nc">Todos</span> <span class="kd">extends</span> <span class="n">Table</span> <span class="o">{</span>
+  <span class="n">IntColumn</span> <span class="kd">get</span> <span class="n">id</span> <span class="o">=&gt;</span> <span class="n">integer</span><span class="o">().</span><span class="na">autoIncrement</span><span class="o">()();</span>
+  <span class="n">TextColumn</span> <span class="kd">get</span> <span class="n">title</span> <span class="o">=&gt;</span> <span class="n">text</span><span class="o">().</span><span class="na">withLength</span><span class="o">(</span><span class="nl">min:</span> <span class="mi">6</span><span class="o">,</span> <span class="nl">max:</span> <span class="mi">10</span><span class="o">)();</span>
+  <span class="n">TextColumn</span> <span class="kd">get</span> <span class="n">content</span> <span class="o">=&gt;</span> <span class="n">text</span><span class="o">().</span><span class="na">named</span><span class="o">(</span><span class="s">'body'</span><span class="o">)();</span>
+  <span class="n">IntColumn</span> <span class="kd">get</span> <span class="n">category</span> <span class="o">=&gt;</span> <span class="n">integer</span><span class="o">().</span><span class="na">nullable</span><span class="o">()();</span>
+<span class="o">}</span>
+
+<span class="c1">// This will make moor generate a class called "Category" to represent a row in this table.</span>
+<span class="c1">// By default, "Categorie" would have been used because it only strips away the trailing "s"</span>
+<span class="c1">// in the table name.</span>
+<span class="nd">@DataClassName</span><span class="o">(</span><span class="s">"Category"</span><span class="o">)</span>
+<span class="kd">class</span> <span class="nc">Categories</span> <span class="kd">extends</span> <span class="n">Table</span> <span class="o">{</span>
+  
+  <span class="n">IntColumn</span> <span class="kd">get</span> <span class="n">id</span> <span class="o">=&gt;</span> <span class="n">integer</span><span class="o">().</span><span class="na">autoIncrement</span><span class="o">()();</span>
+  <span class="n">TextColumn</span> <span class="kd">get</span> <span class="n">description</span> <span class="o">=&gt;</span> <span class="n">text</span><span class="o">()();</span>
+<span class="o">}</span>
+
+<span class="c1">// this annotation tells moor to prepare a database class that uses both of the</span>
+<span class="c1">// tables we just defined. We'll see how to use that database class in a moment.</span>
+<span class="nd">@UseMoor</span><span class="o">(</span><span class="nl">tables:</span> <span class="o">[</span><span class="n">Todos</span><span class="o">,</span> <span class="n">Categories</span><span class="o">])</span>
+<span class="kd">class</span> <span class="nc">MyDatabase</span> <span class="o">{</span>
+  
+<span class="o">}</span>
+</code></pre></div></div>
+
+<p><strong>⚠️ Note:</strong> The column definitions, the table name and the primary key must be known at
+compile time. For column definitions and the primary key, the function must use the <code class="highlighter-rouge">=&gt;</code>
+operator and can’t contain anything more than what’s included in this <code class="highlighter-rouge">readme</code> and the
+examples. Otherwise, the generator won’t be able to know what’s going on.</p>
+
+<h3 id="generating-the-code">Generating the code</h3>
+<p>Moor integrates with the dart <code class="highlighter-rouge">build</code> system, so you can generate all the code needed with 
+<code class="highlighter-rouge">flutter packages pub run build_runner build</code>. If you want to continously rebuild the generated code
+whever you change your code, run <code class="highlighter-rouge">flutter packages pub run build_runner watch</code> instead.
+After running either command once, the moor generator will have created a class for your
+database and data classes for your entities. To use it, change the <code class="highlighter-rouge">MyDatabase</code> class as
+follows:</p>
+<div class="language-dart highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nd">@UseMoor</span><span class="o">(</span><span class="nl">tables:</span> <span class="o">[</span><span class="n">Todos</span><span class="o">,</span> <span class="n">Categories</span><span class="o">])</span>
+<span class="kd">class</span> <span class="nc">MyDatabase</span> <span class="kd">extends</span> <span class="n">_$MyDatabase</span> <span class="o">{</span>
+  <span class="c1">// we tell the database where to store the data with this constructor</span>
+  <span class="n">MyDatabase</span><span class="o">()</span> <span class="o">:</span> <span class="k">super</span><span class="o">(</span><span class="n">FlutterQueryExecutor</span><span class="o">.</span><span class="na">inDatabaseFolder</span><span class="o">(</span><span class="nl">path:</span> <span class="s">'db.sqlite'</span><span class="o">));</span>
+
+  <span class="c1">// you should bump this number whenever you change or add a table definition. Migrations</span>
+  <span class="c1">// are covered later in this readme.</span>
+  <span class="nd">@override</span>
+  <span class="kt">int</span> <span class="kd">get</span> <span class="n">schemaVersion</span> <span class="o">=&gt;</span> <span class="mi">1</span><span class="o">;</span> 
+<span class="o">}</span>
+</code></pre></div></div>
+
+<p>You can ignore the <code class="highlighter-rouge">schemaVersion</code> at the moment, the important part is that you can
+now run your queries with fluent Dart code:</p>
+
+<h2 id="todo-list-and-current-limitations">TODO-List and current limitations</h2>
+<h3 id="limitations-at-the-moment">Limitations (at the moment)</h3>
+<p>Please note that a workaround for most on this list exists with custom statements.</p>
+
+<ul>
+  <li>No <code class="highlighter-rouge">group by</code> or window functions</li>
+</ul>
+
+<h3 id="planned-for-the-future">Planned for the future</h3>
+<p>These aren’t sorted by priority. If you have more ideas or want some features happening soon,
+let me know by creating an issue!</p>
+<ul>
+  <li>Simple <code class="highlighter-rouge">COUNT(*)</code> operations (group operations will be much more complicated)</li>
+  <li>Support Dart VM apps</li>
+  <li>References
+    <ul>
+      <li>DSL API</li>
+      <li>Support in generator</li>
+      <li>Validations</li>
+    </ul>
+  </li>
+  <li>Bulk inserts</li>
+  <li>When inserts / updates fail due to invalid data, explain why that happened
+    <h3 id="interesting-stuff-that-would-be-nice-to-have">Interesting stuff that would be nice to have</h3>
+    <p>Implementing this will very likely result in backwards-incompatible changes.</p>
+  </li>
+  <li>Find a way to hide implementation details from users while still making them
+accessible for the generated code</li>
+  <li><code class="highlighter-rouge">GROUP BY</code> grouping functions</li>
+  <li>Support for different database engines
+    <ul>
+      <li>Support webapps via <code class="highlighter-rouge">AlaSQL</code> or a different engine</li>
+    </ul>
+  </li>
+</ul>
+
+
+
+          
+
+          <hr>
+          <span class="fs-2">
+              Was this page helpful? Please
+              
+              <a href="https://github.com/simolus3/moor/issues/new?body=From+documentation+site+index.md">report an issue</a>
+              if you have questions or problems.
+          </span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</body>
+</html>

@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+
+<html lang="en-us">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=Edge">
+
+  <title>Migrations - Moor</title>
+  <link rel="stylesheet" href="/assets/css/just-the-docs.css">
+  
+  <script type="text/javascript" src="/assets/js/vendor/lunr.min.js"></script>
+  
+  <script type="text/javascript" src="/assets/js/just-the-docs.js"></script>
+
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+</head>
+
+<body>
+
+  <div class="page-wrap">
+    <div class="side-bar">
+      <a href="" class="site-title fs-6 lh-tight">Moor</a>
+      <span class="fs-3"><button class="js-main-nav-trigger navigation-list-toggle btn btn-outline" type="button" data-text-toggle="Hide">Menu</button></span>
+      <div class="navigation main-nav js-main-nav">
+        <nav role="navigation" aria-label="Main navigation">
+  <ul class="navigation-list">
+    
+    
+      
+    
+      
+        
+      
+    
+      
+        
+          <li class="navigation-list-item">
+            
+            <a href="/" class="navigation-list-link">Home</a>
+            
+          </li>
+        
+      
+    
+      
+        
+          <li class="navigation-list-item">
+            
+            <a href="/getting-started/" class="navigation-list-link">Getting started</a>
+            
+          </li>
+        
+      
+    
+      
+        
+          <li class="navigation-list-item">
+            
+            <a href="/writing-queries/" class="navigation-list-link">Writing queries</a>
+            
+              
+              <ul class="navigation-list-child-list ">
+                
+                  
+                
+                  
+                    <li class="navigation-list-item ">
+                      
+                      <a href="/docs/writing_queries/custom_queries.html" class="navigation-list-link">Custom queries</a>
+                      
+                    </li>
+                  
+                
+                  
+                
+                  
+                
+                  
+                
+                  
+                
+                  
+                
+                  
+                
+              </ul>
+            
+          </li>
+        
+      
+    
+      
+        
+          <li class="navigation-list-item">
+            
+            <a href="/docs/transactions.html" class="navigation-list-link">Transactions</a>
+            
+          </li>
+        
+      
+    
+      
+        
+          <li class="navigation-list-item active">
+            
+            <a href="/migrations/" class="navigation-list-link active">Migrations</a>
+            
+          </li>
+        
+      
+    
+      
+        
+          <li class="navigation-list-item">
+            
+            <a href="/daos/" class="navigation-list-link">Modularity with DAOs</a>
+            
+          </li>
+        
+      
+    
+  </ul>
+</nav>
+
+      </div>
+      <footer role="contentinfo" class="site-footer">
+        <p class="text-small text-grey-dk-000 mb-0">This site uses <a href="https://github.com/pmarsceill/just-the-docs">Just the Docs</a>, a documentation theme for Jekyll.</p>
+      </footer>
+    </div>
+    <div class="main-content-wrap js-main-content" tabindex="0">
+      <div class="page-header">
+        <div class="main-content">
+          
+          <div class="search js-search">
+            <div class="search-input-wrap">
+              <input type="text" class="js-search-input search-input" tabindex="0" placeholder="Search Moor" aria-label="Search Moor" autocomplete="off">
+              <svg width="14" height="14" viewBox="0 0 28 28" xmlns="http://www.w3.org/2000/svg" class="search-icon"><title>Search</title><g fill-rule="nonzero"><path d="M17.332 20.735c-5.537 0-10-4.6-10-10.247 0-5.646 4.463-10.247 10-10.247 5.536 0 10 4.601 10 10.247s-4.464 10.247-10 10.247zm0-4c3.3 0 6-2.783 6-6.247 0-3.463-2.7-6.247-6-6.247s-6 2.784-6 6.247c0 3.464 2.7 6.247 6 6.247z"/><path d="M11.672 13.791L.192 25.271 3.02 28.1 14.5 16.62z"/></g></svg>
+            </div>
+            <div class="js-search-results search-results-wrap"></div>
+          </div>
+          
+          
+          <ul class="list-style-none text-small mt-md-1 mb-md-1 pb-4 pb-md-0 js-aux-nav aux-nav">
+            <li><a href="https://pub.dartlang.org/packages/moor_flutter"><img src="https://img.shields.io/pub/v/moor_flutter.svg" /></a></li>
+          </ul> 
+        </div>
+      </div>
+      <div class="main-content">
+        
+          
+        
+        <div id="main-content" class="page-content" role="main">
+          <h1 id="migrations">Migrations</h1>
+<p>Moor provides a migration API that can be used to gradually apply schema changes after bumping
+the <code class="highlighter-rouge">schemaVersion</code> getter inside the <code class="highlighter-rouge">Database</code> class. To use it, override the <code class="highlighter-rouge">migration</code>
+getter. Here’s an example: Let’s say you wanted to add a due date to your todo entries:</p>
+<div class="language-dart highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">class</span> <span class="nc">Todos</span> <span class="kd">extends</span> <span class="n">Table</span> <span class="o">{</span>
+  <span class="n">IntColumn</span> <span class="kd">get</span> <span class="n">id</span> <span class="o">=&gt;</span> <span class="n">integer</span><span class="o">().</span><span class="na">autoIncrement</span><span class="o">()();</span>
+  <span class="n">TextColumn</span> <span class="kd">get</span> <span class="n">title</span> <span class="o">=&gt;</span> <span class="n">text</span><span class="o">().</span><span class="na">withLength</span><span class="o">(</span><span class="nl">min:</span> <span class="mi">6</span><span class="o">,</span> <span class="nl">max:</span> <span class="mi">10</span><span class="o">)();</span>
+  <span class="n">TextColumn</span> <span class="kd">get</span> <span class="n">content</span> <span class="o">=&gt;</span> <span class="n">text</span><span class="o">().</span><span class="na">named</span><span class="o">(</span><span class="s">'body'</span><span class="o">)();</span>
+  <span class="n">IntColumn</span> <span class="kd">get</span> <span class="n">category</span> <span class="o">=&gt;</span> <span class="n">integer</span><span class="o">().</span><span class="na">nullable</span><span class="o">()();</span>
+  <span class="n">DateTimeColumn</span> <span class="kd">get</span> <span class="n">dueDate</span> <span class="o">=&gt;</span> <span class="n">dateTime</span><span class="o">().</span><span class="na">nullable</span><span class="o">()();</span> <span class="c1">// we just added this column</span>
+<span class="o">}</span>
+</code></pre></div></div>
+<p>We can now change the <code class="highlighter-rouge">database</code> class like this:</p>
+<div class="language-dart highlighter-rouge"><div class="highlight"><pre class="highlight"><code>  <span class="nd">@override</span>
+  <span class="kt">int</span> <span class="kd">get</span> <span class="n">schemaVersion</span> <span class="o">=&gt;</span> <span class="mi">2</span><span class="o">;</span> <span class="c1">// bump because the tables have changed</span>
+
+  <span class="nd">@override</span>
+  <span class="n">MigrationStrategy</span> <span class="kd">get</span> <span class="n">migration</span> <span class="o">=&gt;</span> <span class="n">MigrationStrategy</span><span class="o">(</span>
+    <span class="nl">onCreate:</span> <span class="o">(</span><span class="n">Migrator</span> <span class="n">m</span><span class="o">)</span> <span class="o">{</span>
+      <span class="k">return</span> <span class="n">m</span><span class="o">.</span><span class="na">createAllTables</span><span class="o">();</span>
+    <span class="o">},</span>
+    <span class="nl">onUpgrade:</span> <span class="o">(</span><span class="n">Migrator</span> <span class="n">m</span><span class="o">,</span> <span class="kt">int</span> <span class="n">from</span><span class="o">,</span> <span class="kt">int</span> <span class="n">to</span><span class="o">)</span> <span class="n">async</span> <span class="o">{</span>
+      <span class="k">if</span> <span class="o">(</span><span class="n">from</span> <span class="o">==</span> <span class="mi">1</span><span class="o">)</span> <span class="o">{</span>
+        <span class="c1">// we added the dueDate property in the change from version 1</span>
+        <span class="n">await</span> <span class="n">m</span><span class="o">.</span><span class="na">addColumn</span><span class="o">(</span><span class="n">todos</span><span class="o">,</span> <span class="n">todos</span><span class="o">.</span><span class="na">dueDate</span><span class="o">);</span>
+      <span class="o">}</span>
+    <span class="o">}</span>
+  <span class="o">);</span>
+
+  <span class="c1">// rest of class can stay the same</span>
+</code></pre></div></div>
+<p>You can also add individual tables or drop them. You can’t use the high-level query API in
+migrations. If you need to use it, please specify the <code class="highlighter-rouge">onFinished</code> method on the 
+<code class="highlighter-rouge">MigrationStrategy</code>. It will be called after a migration happened and it’s safe to call methods
+on your database from inside that method.</p>
+
+
+
+          
+
+          <hr>
+          <span class="fs-2">
+              Was this page helpful? Please
+              
+              <a href="https://github.com/simolus3/moor/issues/new?body=From+documentation+site+docs%2Fmigrations.md">report an issue</a>
+              if you have questions or problems.
+          </span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</body>
+</html>
