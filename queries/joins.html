@@ -70,7 +70,7 @@
                   
                     <li class="navigation-list-item ">
                       
-                      <a href="https://moor.simonbinder.eu/docs/writing_queries/custom_queries.html" class="navigation-list-link">Custom queries</a>
+                      <a href="https://moor.simonbinder.eu/queries/custom" class="navigation-list-link">Custom queries</a>
                       
                     </li>
                   
@@ -176,7 +176,109 @@
 
 
 <h1 id="joins">Joins</h1>
-<p>TBD</p>
+<p>Moor supports sql joins to write queries that operate on more than one table. To use that feature, start
+a select regular select statement with <code class="highlighter-rouge">select(table)</code> and then add a list of joins using <code class="highlighter-rouge">.join()</code>. For
+inner and left outer joins, a <code class="highlighter-rouge">ON</code> expression needs to be specified. Here’s an example using the tables
+defined in the <a href="https://moor.simonbinder.eu/getting-started">example</a>.</p>
+
+<div class="language-dart highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">// we define a data class to contain both a todo entry and the associated category</span>
+<span class="kd">class</span> <span class="nc">EntryWithCategory</span> <span class="o">{</span>
+  <span class="n">EntryWithCategory</span><span class="o">(</span><span class="k">this</span><span class="o">.</span><span class="na">entry</span><span class="o">,</span> <span class="k">this</span><span class="o">.</span><span class="na">category</span><span class="o">);</span>
+
+  <span class="kd">final</span> <span class="n">TodoEntry</span> <span class="n">entry</span><span class="o">;</span>
+  <span class="kd">final</span> <span class="n">Category</span> <span class="n">category</span><span class="o">;</span>
+<span class="o">}</span>
+
+<span class="c1">// in the database class, we can then load the category for each entry</span>
+<span class="n">Stream</span><span class="o">&lt;</span><span class="n">List</span><span class="o">&lt;</span><span class="n">EntryWithCategory</span><span class="o">&gt;&gt;</span> <span class="n">entriesWithCategory</span><span class="o">()</span> <span class="o">{</span>
+  <span class="kd">final</span> <span class="n">query</span> <span class="o">=</span> <span class="n">select</span><span class="o">(</span><span class="n">todos</span><span class="o">).</span><span class="na">join</span><span class="o">([</span>
+    <span class="n">leftOuterJoin</span><span class="o">(</span><span class="n">categories</span><span class="o">,</span> <span class="n">categories</span><span class="o">.</span><span class="na">id</span><span class="o">.</span><span class="na">equalsExp</span><span class="o">(</span><span class="n">todos</span><span class="o">.</span><span class="na">category</span><span class="o">)),</span>
+  <span class="o">]);</span>
+
+  <span class="c1">// see next section on how to parse the result</span>
+<span class="o">}</span>
+</code></pre></div></div>
+
+<h2 id="parsing-results">Parsing results</h2>
+<p>Calling <code class="highlighter-rouge">get()</code> or <code class="highlighter-rouge">watch</code> on a select statement with join returns a <code class="highlighter-rouge">Future</code> or <code class="highlighter-rouge">Stream</code> of
+<code class="highlighter-rouge">List&lt;TypedResult&gt;</code> respectively. Each <code class="highlighter-rouge">TypedResult</code> represents a row from which data can be 
+read. It contains a <code class="highlighter-rouge">rawData</code> getter to obtain the raw row. But more importantly, the
+<code class="highlighter-rouge">readTable</code> method can be used to read a data class from a table.</p>
+
+<p>In the example query above, we can read the todo entry and the category from each row like this:</p>
+<div class="language-dart highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">return</span> <span class="n">query</span><span class="o">.</span><span class="na">watch</span><span class="o">().</span><span class="na">map</span><span class="o">((</span><span class="n">rows</span><span class="o">)</span> <span class="o">{</span>
+  <span class="k">return</span> <span class="n">rows</span><span class="o">.</span><span class="na">map</span><span class="o">((</span><span class="n">row</span><span class="o">)</span> <span class="o">{</span>
+    <span class="k">return</span> <span class="n">EntryWithCategory</span><span class="o">(</span>
+      <span class="n">row</span><span class="o">.</span><span class="na">readTable</span><span class="o">(</span><span class="n">todos</span><span class="o">),</span>
+      <span class="n">row</span><span class="o">.</span><span class="na">readTable</span><span class="o">(</span><span class="n">categories</span><span class="o">),</span>
+    <span class="o">);</span>
+  <span class="o">}).</span><span class="na">toList</span><span class="o">();</span>
+<span class="o">});</span>
+</code></pre></div></div>
+
+<p><em>Note</em>: <code class="highlighter-rouge">readTable</code> returns <code class="highlighter-rouge">null</code> when an entity is not present in the row. For instance, todo entries
+might not be in any category. In that case, <code class="highlighter-rouge">row.readTable(categories)</code> returns <code class="highlighter-rouge">null</code>.</p>
+<h2 id="aliases">Aliases</h2>
+<p>Sometimes, a query references a table more than once. Consider the following example to store saved routes for a
+navigation system:</p>
+<div class="language-dart highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">class</span> <span class="nc">GeoPoints</span> <span class="kd">extends</span> <span class="n">Table</span> <span class="o">{</span>
+  <span class="n">IntColumn</span> <span class="kd">get</span> <span class="n">id</span> <span class="o">=&gt;</span> <span class="n">integer</span><span class="o">().</span><span class="na">autoIncrement</span><span class="o">()();</span>
+  <span class="n">TextColumn</span> <span class="kd">get</span> <span class="n">name</span> <span class="o">=&gt;</span> <span class="n">text</span><span class="o">()();</span>
+  <span class="n">TextColumn</span> <span class="kd">get</span> <span class="n">latitude</span> <span class="o">=&gt;</span> <span class="n">text</span><span class="o">()();</span>
+  <span class="n">TextColumn</span> <span class="kd">get</span> <span class="n">longitude</span> <span class="o">=&gt;</span> <span class="n">text</span><span class="o">()();</span>
+<span class="o">}</span>
+
+<span class="kd">class</span> <span class="nc">Routes</span> <span class="kd">extends</span> <span class="n">Table</span> <span class="o">{</span>
+
+  <span class="n">IntColumn</span> <span class="kd">get</span> <span class="n">id</span> <span class="o">=&gt;</span> <span class="n">integer</span><span class="o">().</span><span class="na">autoIncrement</span><span class="o">()();</span>
+  <span class="n">TextColumn</span> <span class="kd">get</span> <span class="n">name</span> <span class="o">=&gt;</span> <span class="n">text</span><span class="o">()();</span>
+
+  <span class="c1">// contains the id for the start and destination geopoint.</span>
+  <span class="n">IntColumn</span> <span class="kd">get</span> <span class="n">start</span> <span class="o">=&gt;</span> <span class="n">integer</span><span class="o">()();</span>
+  <span class="n">IntColumn</span> <span class="kd">get</span> <span class="n">destination</span> <span class="o">=&gt;</span> <span class="n">integer</span><span class="o">()();</span>
+<span class="o">}</span>
+</code></pre></div></div>
+
+<p>Now, let’s say we wanted to also load the start and destination <code class="highlighter-rouge">GeoPoint</code> object for each route. We’d have to use
+a join on the <code class="highlighter-rouge">geo-points</code> table twice: For the start and destination point. To express that in a query, aliases
+can be used:</p>
+<div class="language-dart highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">class</span> <span class="nc">RouteWithPoints</span> <span class="o">{</span>
+  <span class="kd">final</span> <span class="n">Route</span> <span class="n">route</span><span class="o">;</span>
+  <span class="kd">final</span> <span class="n">GeoPoint</span> <span class="n">start</span><span class="o">;</span>
+  <span class="kd">final</span> <span class="n">GeoPoint</span> <span class="n">destination</span><span class="o">;</span>
+
+  <span class="n">RouteWithPoints</span><span class="o">({</span><span class="k">this</span><span class="o">.</span><span class="na">route</span><span class="o">,</span> <span class="k">this</span><span class="o">.</span><span class="na">start</span><span class="o">,</span> <span class="k">this</span><span class="o">.</span><span class="na">destination</span><span class="o">});</span>
+<span class="o">}</span>
+
+<span class="c1">// inside the database class:</span>
+<span class="n">Future</span><span class="o">&lt;</span><span class="n">List</span><span class="o">&lt;</span><span class="n">RouteWithPoints</span><span class="o">&gt;&gt;</span> <span class="n">loadRoutes</span><span class="o">()</span> <span class="n">async</span> <span class="o">{</span>
+  <span class="c1">// create aliases for the geoPoints table so that we can reference it twice</span>
+  <span class="kd">final</span> <span class="n">start</span> <span class="o">=</span> <span class="n">alias</span><span class="o">(</span><span class="n">geoPoints</span><span class="o">,</span> <span class="s">'s'</span><span class="o">);</span>
+  <span class="kd">final</span> <span class="n">destination</span> <span class="o">=</span> <span class="n">alias</span><span class="o">(</span><span class="n">geoPoints</span><span class="o">,</span> <span class="s">'d'</span><span class="o">);</span>
+ 
+  <span class="kd">final</span> <span class="n">rows</span> <span class="o">=</span> <span class="n">await</span> <span class="n">select</span><span class="o">(</span><span class="n">routes</span><span class="o">).</span><span class="na">join</span><span class="o">([</span>
+    <span class="n">innerJoin</span><span class="o">(</span><span class="n">start</span><span class="o">,</span> <span class="n">start</span><span class="o">.</span><span class="na">id</span><span class="o">.</span><span class="na">equalsExp</span><span class="o">(</span><span class="n">routes</span><span class="o">.</span><span class="na">start</span><span class="o">)),</span>
+    <span class="n">innerJoin</span><span class="o">(</span><span class="n">destination</span><span class="o">,</span> <span class="n">destination</span><span class="o">.</span><span class="na">id</span><span class="o">.</span><span class="na">equalsExp</span><span class="o">(</span><span class="n">routes</span><span class="o">.</span><span class="na">destination</span><span class="o">)),</span>
+  <span class="o">]).</span><span class="na">get</span><span class="o">();</span>
+
+  <span class="k">return</span> <span class="n">rows</span><span class="o">.</span><span class="na">map</span><span class="o">((</span><span class="n">resultRow</span><span class="o">)</span> <span class="o">{</span>
+    <span class="k">return</span> <span class="n">RouteWithPoints</span><span class="o">(</span>
+      <span class="nl">route:</span> <span class="n">resultRow</span><span class="o">.</span><span class="na">readTable</span><span class="o">(</span><span class="n">routes</span><span class="o">),</span>
+      <span class="nl">start:</span> <span class="n">resultRow</span><span class="o">.</span><span class="na">readTable</span><span class="o">(</span><span class="n">start</span><span class="o">),</span>
+      <span class="nl">destination:</span> <span class="n">resultRow</span><span class="o">.</span><span class="na">readTable</span><span class="o">(</span><span class="n">destination</span><span class="o">),</span>
+    <span class="o">);</span>
+  <span class="o">}).</span><span class="na">toList</span><span class="o">();</span>
+<span class="o">}</span>
+</code></pre></div></div>
+<p>The generated statement then looks like this:</p>
+<div class="language-sql highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">SELECT</span> 
+    <span class="n">routes</span><span class="p">.</span><span class="n">id</span><span class="p">,</span> <span class="n">routes</span><span class="p">.</span><span class="n">name</span><span class="p">,</span> <span class="n">routes</span><span class="p">.</span><span class="k">start</span><span class="p">,</span> <span class="n">routes</span><span class="p">.</span><span class="n">destination</span><span class="p">,</span>
+    <span class="n">s</span><span class="p">.</span><span class="n">id</span><span class="p">,</span> <span class="n">s</span><span class="p">.</span><span class="n">name</span><span class="p">,</span> <span class="n">s</span><span class="p">.</span><span class="n">latitude</span><span class="p">,</span> <span class="n">s</span><span class="p">.</span><span class="n">longitude</span><span class="p">,</span>
+    <span class="n">d</span><span class="p">.</span><span class="n">id</span><span class="p">,</span> <span class="n">d</span><span class="p">.</span><span class="n">name</span><span class="p">,</span> <span class="n">d</span><span class="p">.</span><span class="n">latitude</span><span class="p">,</span> <span class="n">d</span><span class="p">.</span><span class="n">longitude</span> 
+<span class="k">FROM</span> <span class="n">routes</span> 
+    <span class="k">INNER</span> <span class="k">JOIN</span> <span class="n">geo_points</span> <span class="n">s</span> <span class="k">ON</span> <span class="n">s</span><span class="p">.</span><span class="n">id</span> <span class="o">=</span> <span class="n">routes</span><span class="p">.</span><span class="k">start</span>
+    <span class="k">INNER</span> <span class="k">JOIN</span> <span class="n">geo_points</span> <span class="n">d</span> <span class="k">ON</span> <span class="n">d</span><span class="p">.</span><span class="n">id</span> <span class="o">=</span> <span class="n">routes</span><span class="p">.</span><span class="n">destination</span>
+</code></pre></div></div>
 
 
           
