@@ -237,6 +237,8 @@ body { position: relative; padding-bottom: 4rem; }
 .main-nav.nav-open, .aux-nav.nav-open { display: block; }
 @media (min-width: 46.25rem) { .main-nav, .aux-nav { display: block; } }
 
+.aux-nav li { display: inline-block; }
+
 .navigation-list-toggle { position: absolute; right: 1rem; }
 @media (min-width: 46.25rem) { .navigation-list-toggle { display: none !important; } }
 

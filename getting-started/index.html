@@ -154,6 +154,7 @@
           
           <ul class="list-style-none text-small mt-md-1 mb-md-1 pb-4 pb-md-0 js-aux-nav aux-nav">
             <li><a href="https://pub.dartlang.org/packages/moor_flutter"><img src="https://img.shields.io/pub/v/moor_flutter.svg" /></a></li>
+            <li><a href="https://github.com/simolus3/moor"><img src="https://img.shields.io/badge/repo-24292E.svg?logo=github&style=flat"></a></li>
           </ul> 
         </div>
       </div>
@@ -176,7 +177,7 @@ At the moment, the current version of <code class="highlighter-rouge">moor_flutt
 </code></pre></div></div>
 <p>We’re going to use the <code class="highlighter-rouge">moor_flutter</code> library to specify tables and access the database. The
 <code class="highlighter-rouge">moor_generator</code> library will take care of generating the necessary code so the
-library knows how your table structure looks like.</p>
+library knows what your table structure looks like.</p>
 
 <h3 id="declaring-tables">Declaring tables</h3>
 <p>Using moor, you can model the structure of your tables with simple dart code:</p>
@@ -215,11 +216,11 @@ library knows how your table structure looks like.</p>
 
 <p><strong>⚠️ Note:</strong> The column definitions, the table name and the primary key must be known at
 compile time. For column definitions and the primary key, the function must use the <code class="highlighter-rouge">=&gt;</code>
-operator and can’t contain anything more than what’s included in this <code class="highlighter-rouge">readme</code> and the
+operator and can’t contain anything more than what’s included in the documentation and the
 examples. Otherwise, the generator won’t be able to know what’s going on.</p>
 
 <h3 id="generating-the-code">Generating the code</h3>
-<p>Moor integrates with the dart <code class="highlighter-rouge">build</code> system, so you can generate all the code needed with 
+<p>Moor integrates with Dart’s <code class="highlighter-rouge">build</code> system, so you can generate all the code needed with 
 <code class="highlighter-rouge">flutter packages pub run build_runner build</code>. If you want to continously rebuild the generated code
 whever you change your code, run <code class="highlighter-rouge">flutter packages pub run build_runner watch</code> instead.
 After running either command once, the moor generator will have created a class for your

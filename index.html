@@ -154,6 +154,7 @@
           
           <ul class="list-style-none text-small mt-md-1 mb-md-1 pb-4 pb-md-0 js-aux-nav aux-nav">
             <li><a href="https://pub.dartlang.org/packages/moor_flutter"><img src="https://img.shields.io/pub/v/moor_flutter.svg" /></a></li>
+            <li><a href="https://github.com/simolus3/moor"><img src="https://img.shields.io/badge/repo-24292E.svg?logo=github&style=flat"></a></li>
           </ul> 
         </div>
       </div>
@@ -188,7 +189,7 @@ At the moment, the current version of <code class="highlighter-rouge">moor_flutt
 </code></pre></div></div>
 <p>We’re going to use the <code class="highlighter-rouge">moor_flutter</code> library to specify tables and access the database. The
 <code class="highlighter-rouge">moor_generator</code> library will take care of generating the necessary code so the
-library knows how your table structure looks like.</p>
+library knows what your table structure looks like.</p>
 
 <h3 id="declaring-tables">Declaring tables</h3>
 <p>Using moor, you can model the structure of your tables with simple dart code:</p>
@@ -227,11 +228,11 @@ library knows how your table structure looks like.</p>
 
 <p><strong>⚠️ Note:</strong> The column definitions, the table name and the primary key must be known at
 compile time. For column definitions and the primary key, the function must use the <code class="highlighter-rouge">=&gt;</code>
-operator and can’t contain anything more than what’s included in this <code class="highlighter-rouge">readme</code> and the
+operator and can’t contain anything more than what’s included in the documentation and the
 examples. Otherwise, the generator won’t be able to know what’s going on.</p>
 
 <h3 id="generating-the-code">Generating the code</h3>
-<p>Moor integrates with the dart <code class="highlighter-rouge">build</code> system, so you can generate all the code needed with 
+<p>Moor integrates with Dart’s <code class="highlighter-rouge">build</code> system, so you can generate all the code needed with 
 <code class="highlighter-rouge">flutter packages pub run build_runner build</code>. If you want to continously rebuild the generated code
 whever you change your code, run <code class="highlighter-rouge">flutter packages pub run build_runner watch</code> instead.
 After running either command once, the moor generator will have created a class for your
@@ -254,40 +255,24 @@ now run your queries with fluent Dart code</p>
 
 <h2 id="writing-queries"><a href="https://moor.simonbinder.eu/queries">Writing queries</a></h2>
 
-<h2 id="todo-list-and-current-limitations">TODO-List and current limitations</h2>
+<h2 id="todo-list">TODO-List</h2>
+<p>There are some sql features like <code class="highlighter-rouge">group by</code> statements which aren’t natively supported by moor yet.
+However, as moor supports <a href="https://moor.simonbinder.eu/queries/custom">custom sql queries</a>, there are easy
+workarounds for most entries on this list. Custom queries work well together with the regular api,
+as they integrate with stream queries and automatic result parsing.</p>
 <h3 id="limitations-at-the-moment">Limitations (at the moment)</h3>
-<p>Please note that a workaround for most on this list exists with custom statements.</p>
-
-<ul>
-  <li>No <code class="highlighter-rouge">group by</code> or window functions</li>
-</ul>
-
-<h3 id="planned-for-the-future">Planned for the future</h3>
 <p>These aren’t sorted by priority. If you have more ideas or want some features happening soon,
 let me know by <a href="https://github.com/simolus3/moor/issues/new">creating an issue</a>!</p>
 <ul>
-  <li>Simple <code class="highlighter-rouge">COUNT(*)</code> operations (group operations will be much more complicated)</li>
-  <li>Support Dart VM apps</li>
-  <li>References
+  <li>No <code class="highlighter-rouge">group by</code>, count, or window functions</li>
+  <li>Support other platforms:
     <ul>
-      <li>DSL API</li>
-      <li>Support in generator</li>
-      <li>Validations</li>
+      <li>VM apps</li>
+      <li>Web apps via <code class="highlighter-rouge">AlaSQL</code> or a different engine?</li>
     </ul>
   </li>
-  <li>Bulk inserts</li>
-  <li>When inserts / updates fail due to invalid data, explain why that happened
-    <h3 id="interesting-stuff-that-would-be-nice-to-have">Interesting stuff that would be nice to have</h3>
-    <p>Implementing this will very likely result in backwards-incompatible changes.</p>
-  </li>
-  <li>Find a way to hide implementation details from users while still making them
-accessible for the generated code</li>
-  <li><code class="highlighter-rouge">GROUP BY</code> grouping functions</li>
-  <li>Support for different database engines
-    <ul>
-      <li>Support webapps via <code class="highlighter-rouge">AlaSQL</code> or a different engine</li>
-    </ul>
-  </li>
+  <li>References (can be expressed via custom constraints, see issue <a href="https://github.com/simolus3/moor/issues/14">#14</a>)</li>
+  <li>When inserts / updates fail due to invalid data, explain why that happened</li>
 </ul>
 
 
