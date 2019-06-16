@@ -173,7 +173,7 @@ available from your main database class. Consider the following code:</p>
 <span class="c1">// fields for the tables. The &lt;MyDatabase&gt; type annotation is the database class</span>
 <span class="c1">// that should use this dao.</span>
 <span class="nd">@UseDao</span><span class="o">(</span><span class="nl">tables:</span> <span class="o">[</span><span class="n">Todos</span><span class="o">])</span>
-<span class="kd">class</span> <span class="nc">TodosDao</span> <span class="kd">extends</span> <span class="n">DatabaseAccessor</span><span class="o">&lt;</span><span class="n">MyDatabase</span><span class="o">&gt;</span> <span class="k">with</span> <span class="n">_TodosDaoMixin</span> <span class="o">{</span>
+<span class="kd">class</span> <span class="nc">TodosDao</span> <span class="kd">extends</span> <span class="n">DatabaseAccessor</span><span class="o">&lt;</span><span class="n">MyDatabase</span><span class="o">&gt;</span> <span class="k">with</span> <span class="n">_$TodosDaoMixin</span> <span class="o">{</span>
   <span class="c1">// this constructor is required so that the main database can create an instance</span>
   <span class="c1">// of this object.</span>
   <span class="n">TodosDao</span><span class="o">(</span><span class="n">MyDatabase</span> <span class="n">db</span><span class="o">)</span> <span class="o">:</span> <span class="k">super</span><span class="o">(</span><span class="n">db</span><span class="o">);</span>
