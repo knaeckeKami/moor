@@ -95,6 +95,8 @@
                 
                   
                 
+                  
+                
               </ul>
             
           </li>
@@ -126,6 +128,16 @@
           <li class="navigation-list-item">
             
             <a href="https://moor.simonbinder.eu/daos/" class="navigation-list-link">Modularity with DAOs</a>
+            
+          </li>
+        
+      
+    
+      
+        
+          <li class="navigation-list-item">
+            
+            <a href="https://moor.simonbinder.eu/faq/" class="navigation-list-link">Frequently asked questions</a>
             
           </li>
         
@@ -174,7 +186,7 @@ getter. Here’s an example: Let’s say you wanted to add a due date to your to
   <span class="n">TextColumn</span> <span class="kd">get</span> <span class="n">title</span> <span class="o">=&gt;</span> <span class="n">text</span><span class="o">().</span><span class="na">withLength</span><span class="o">(</span><span class="nl">min:</span> <span class="mi">6</span><span class="o">,</span> <span class="nl">max:</span> <span class="mi">10</span><span class="o">)();</span>
   <span class="n">TextColumn</span> <span class="kd">get</span> <span class="n">content</span> <span class="o">=&gt;</span> <span class="n">text</span><span class="o">().</span><span class="na">named</span><span class="o">(</span><span class="s">'body'</span><span class="o">)();</span>
   <span class="n">IntColumn</span> <span class="kd">get</span> <span class="n">category</span> <span class="o">=&gt;</span> <span class="n">integer</span><span class="o">().</span><span class="na">nullable</span><span class="o">()();</span>
-  <span class="n">DateTimeColumn</span> <span class="kd">get</span> <span class="n">dueDate</span> <span class="o">=&gt;</span> <span class="n">dateTime</span><span class="o">().</span><span class="na">nullable</span><span class="o">()();</span> <span class="c1">// we just added this column</span>
+  <span class="n">DateTimeColumn</span> <span class="kd">get</span> <span class="n">dueDate</span> <span class="o">=&gt;</span> <span class="n">dateTime</span><span class="o">().</span><span class="na">nullable</span><span class="o">()();</span> <span class="c1">// new, added column</span>
 <span class="o">}</span>
 </code></pre></div></div>
 <p>We can now change the <code class="highlighter-rouge">database</code> class like this:</p>
@@ -196,10 +208,47 @@ getter. Here’s an example: Let’s say you wanted to add a due date to your to
 
   <span class="c1">// rest of class can stay the same</span>
 </code></pre></div></div>
-<p>You can also add individual tables or drop them. You can’t use the high-level query API in
-migrations. If you need to use it, please specify the <code class="highlighter-rouge">onFinished</code> method on the 
-<code class="highlighter-rouge">MigrationStrategy</code>. It will be called after a migration happened and it’s safe to call methods
-on your database from inside that method.</p>
+<p>You can also add individual tables or drop them - see the reference of <a href="https://pub.dev/documentation/moor/latest/moor/Migrator-class.html">Migrator</a>
+for all the available options. You can’t use the high-level query API in migrations - calling <code class="highlighter-rouge">select</code> or similar 
+methods will throw.</p>
+
+<p><code class="highlighter-rouge">sqlite</code> can feel a bit limiting when it comes to migrations - there only are methods to create tables and columns.
+Existing columns can’t be altered or removed. A workaround is described <a href="https://stackoverflow.com/a/805508">here</a>, it
+can be used together with <a href="https://pub.dev/documentation/moor/latest/moor/Migrator/issueCustomQuery.html"><code class="highlighter-rouge">issueCustomQuery</code></a>
+to run the statements.</p>
+
+<h2 id="post-migration-callbacks">Post-migration callbacks</h2>
+<p>Starting from moor 1.5, you can use the <code class="highlighter-rouge">beforeOpen</code> parameter in the <code class="highlighter-rouge">MigrationStrategy</code> which will be called after
+migrations, but after any other queries are run. You could use it to populate data after the database has been created:</p>
+<div class="language-dart highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nl">beforeOpen:</span> <span class="o">(</span><span class="n">db</span><span class="o">,</span> <span class="n">details</span><span class="o">)</span> <span class="n">async</span> <span class="o">{</span>
+    <span class="k">if</span> <span class="o">(</span><span class="n">details</span><span class="o">.</span><span class="na">wasCreated</span><span class="o">)</span> <span class="o">{</span>
+      <span class="kd">final</span> <span class="n">workId</span> <span class="o">=</span> <span class="n">await</span> <span class="n">db</span><span class="o">.</span><span class="na">into</span><span class="o">(</span><span class="n">categories</span><span class="o">).</span><span class="na">insert</span><span class="o">(</span><span class="n">Category</span><span class="o">(</span><span class="nl">description:</span> <span class="s">'Work'</span><span class="o">));</span>
+    
+      <span class="n">await</span> <span class="n">db</span><span class="o">.</span><span class="na">into</span><span class="o">(</span><span class="n">todos</span><span class="o">).</span><span class="na">insert</span><span class="o">(</span><span class="n">TodoEntry</span><span class="o">(</span>
+            <span class="nl">content:</span> <span class="s">'A first todo entry'</span><span class="o">,</span>
+            <span class="nl">category:</span> <span class="kc">null</span><span class="o">,</span>
+            <span class="nl">targetDate:</span> <span class="n">DateTime</span><span class="o">.</span><span class="na">now</span><span class="o">(),</span>
+      <span class="o">));</span>
+    
+      <span class="n">await</span> <span class="n">db</span><span class="o">.</span><span class="na">into</span><span class="o">(</span><span class="n">todos</span><span class="o">).</span><span class="na">insert</span><span class="o">(</span>
+            <span class="n">TodoEntry</span><span class="o">(</span>
+              <span class="nl">content:</span> <span class="s">'Rework persistence code'</span><span class="o">,</span>
+              <span class="nl">category:</span> <span class="n">workId</span><span class="o">,</span>
+              <span class="nl">targetDate:</span> <span class="n">DateTime</span><span class="o">.</span><span class="na">now</span><span class="o">().</span><span class="na">add</span><span class="o">(</span><span class="kd">const</span> <span class="n">Duration</span><span class="o">(</span><span class="nl">days:</span> <span class="mi">4</span><span class="o">)),</span>
+      <span class="o">));</span>
+    <span class="o">}</span>
+<span class="o">},</span>
+</code></pre></div></div>
+<p>You could also activate pragma statements that you need:</p>
+<div class="language-dart highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nl">beforeOpen:</span> <span class="o">(</span><span class="n">db</span><span class="o">,</span> <span class="n">details</span><span class="o">)</span> <span class="n">async</span> <span class="o">{</span>
+  <span class="k">if</span> <span class="o">(</span><span class="n">details</span><span class="o">.</span><span class="na">wasCreated</span><span class="o">)</span> <span class="o">{</span>
+    <span class="c1">// ...</span>
+  <span class="o">}</span>
+  <span class="n">await</span> <span class="n">db</span><span class="o">.</span><span class="na">customStatement</span><span class="o">(</span><span class="s">'PRAGMA foreign_keys = ON'</span><span class="o">);</span>
+<span class="o">}</span>
+</code></pre></div></div>
+<p>It is important that you run these queries on <code class="highlighter-rouge">db</code> explicitly. Failing to do so causes a deadlock which prevents the
+database from being opened.</p>
 
 
           
@@ -209,7 +258,7 @@ on your database from inside that method.</p>
               Was this page helpful? Please
               
               
-              <a href="https://github.com/simolus3/moor/issues/new?body=From+documentation+URL%3A+https%3A%2F%2Fmoor.simonbinder.eu%2Fmigrations%2F">report an issue</a>
+              <a href="https://github.com/simolus3/moor/issues/new?body=Refers+to+the+documentation%3A+https%3A%2F%2Fmoor.simonbinder.eu%2Fmigrations%2F">report an issue</a>
               if you have questions or run into problems.
           </span>
         </div>

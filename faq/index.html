@@ -5,7 +5,7 @@
   <meta charset="UTF-8">
   <meta http-equiv="X-UA-Compatible" content="IE=Edge">
 
-  <title>Modularity with DAOs - Moor</title>
+  <title>Frequently asked questions - Moor</title>
   <link rel="stylesheet" href="https://moor.simonbinder.eu/assets/css/just-the-docs.css">
   
   <script type="text/javascript" src="https://moor.simonbinder.eu/assets/js/vendor/lunr.min.js"></script>
@@ -125,9 +125,9 @@
     
       
         
-          <li class="navigation-list-item active">
+          <li class="navigation-list-item">
             
-            <a href="https://moor.simonbinder.eu/daos/" class="navigation-list-link active">Modularity with DAOs</a>
+            <a href="https://moor.simonbinder.eu/daos/" class="navigation-list-link">Modularity with DAOs</a>
             
           </li>
         
@@ -135,9 +135,9 @@
     
       
         
-          <li class="navigation-list-item">
+          <li class="navigation-list-item active">
             
-            <a href="https://moor.simonbinder.eu/faq/" class="navigation-list-link">Frequently asked questions</a>
+            <a href="https://moor.simonbinder.eu/faq/" class="navigation-list-link active">Frequently asked questions</a>
             
           </li>
         
@@ -175,33 +175,39 @@
           
         
         <div id="main-content" class="page-content" role="main">
-          <h1 id="extracting-functionality-with-daos">Extracting functionality with DAOs</h1>
-<p>When you have a lot of queries, putting them all into one class might become
-tedious. You can avoid this by extracting some queries into classes that are 
-available from your main database class. Consider the following code:</p>
-<div class="language-dart highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">part</span> <span class="s">'todos_dao.g.dart'</span><span class="o">;</span>
+          <h2 id="using-the-database">Using the database</h2>
+<p>If you’ve created a <code class="highlighter-rouge">MyDatabase</code> class by following the <a href="https://moor.simonbinder.eu/getting-started/">getting started guide</a>, you
+still need to somehow obtain an instance of it. It’s recommended to only have one (singleton) instance of your database,
+so you could store that instance in a global variable:</p>
 
-<span class="c1">// the _TodosDaoMixin will be created by moor. It contains all the necessary</span>
-<span class="c1">// fields for the tables. The &lt;MyDatabase&gt; type annotation is the database class</span>
-<span class="c1">// that should use this dao.</span>
-<span class="nd">@UseDao</span><span class="o">(</span><span class="nl">tables:</span> <span class="o">[</span><span class="n">Todos</span><span class="o">])</span>
-<span class="kd">class</span> <span class="nc">TodosDao</span> <span class="kd">extends</span> <span class="n">DatabaseAccessor</span><span class="o">&lt;</span><span class="n">MyDatabase</span><span class="o">&gt;</span> <span class="k">with</span> <span class="n">_$TodosDaoMixin</span> <span class="o">{</span>
-  <span class="c1">// this constructor is required so that the main database can create an instance</span>
-  <span class="c1">// of this object.</span>
-  <span class="n">TodosDao</span><span class="o">(</span><span class="n">MyDatabase</span> <span class="n">db</span><span class="o">)</span> <span class="o">:</span> <span class="k">super</span><span class="o">(</span><span class="n">db</span><span class="o">);</span>
+<h3 id="vanilla-flutter">Vanilla flutter</h3>
+<div class="language-dart highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">MyDatabase</span> <span class="n">database</span><span class="o">;</span>
 
-  <span class="n">Stream</span><span class="o">&lt;</span><span class="n">List</span><span class="o">&lt;</span><span class="n">TodoEntry</span><span class="o">&gt;&gt;</span> <span class="n">todosInCategory</span><span class="o">(</span><span class="n">Category</span> <span class="n">category</span><span class="o">)</span> <span class="o">{</span>
-    <span class="k">if</span> <span class="o">(</span><span class="n">category</span> <span class="o">==</span> <span class="kc">null</span><span class="o">)</span> <span class="o">{</span>
-      <span class="k">return</span> <span class="o">(</span><span class="n">select</span><span class="o">(</span><span class="n">todos</span><span class="o">)..</span><span class="na">where</span><span class="o">((</span><span class="n">t</span><span class="o">)</span> <span class="o">=&gt;</span> <span class="n">isNull</span><span class="o">(</span><span class="n">t</span><span class="o">.</span><span class="na">category</span><span class="o">))).</span><span class="na">watch</span><span class="o">();</span>
-    <span class="o">}</span> <span class="k">else</span> <span class="o">{</span>
-      <span class="k">return</span> <span class="o">(</span><span class="n">select</span><span class="o">(</span><span class="n">todos</span><span class="o">)..</span><span class="na">where</span><span class="o">((</span><span class="n">t</span><span class="o">)</span> <span class="o">=&gt;</span> <span class="n">t</span><span class="o">.</span><span class="na">category</span><span class="o">.</span><span class="na">equals</span><span class="o">(</span><span class="n">category</span><span class="o">.</span><span class="na">id</span><span class="o">)))</span>
-          <span class="o">.</span><span class="na">watch</span><span class="o">();</span>
-    <span class="o">}</span>
-  <span class="o">}</span>
+<span class="kt">void</span> <span class="nf">main</span><span class="p">(</span><span class="o">)</span> <span class="o">{</span>
+  <span class="n">database</span> <span class="o">=</span> <span class="n">MyDatabase</span><span class="o">();</span>
+  <span class="n">runApp</span><span class="o">(</span><span class="n">MyFlutterApp</span><span class="o">());</span>
 <span class="o">}</span>
 </code></pre></div></div>
-<p>If we now change the annotation on the <code class="highlighter-rouge">MyDatabase</code> class to <code class="highlighter-rouge">@UseMoor(tables: [Todos, Categories], daos: [TodosDao])</code>
-and re-run the code generation, a generated getter <code class="highlighter-rouge">todosDao</code> can be used to access the instance of that dao.</p>
+<p>It would be cleaner to use <code class="highlighter-rouge">InheritedWidgets</code> for that, and the <code class="highlighter-rouge">provider</code> package helps here:</p>
+
+<h3 id="provider">Provider</h3>
+<p>If you’re using the <a href="https://pub.dev/packages/provider">provider</a> package, you can wrap your top-level widget in a
+provider that manages the database instance:</p>
+<div class="language-dart highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kt">void</span> <span class="nf">main</span><span class="p">(</span><span class="o">)</span> <span class="o">{</span>
+  <span class="n">runApp</span><span class="o">(</span>
+    <span class="n">Provider</span><span class="o">&lt;</span><span class="n">MyDatabase</span><span class="o">&gt;(</span>
+      <span class="nl">builder:</span> <span class="o">(</span><span class="n">context</span><span class="o">)</span> <span class="o">=&gt;</span> <span class="n">MyDatabase</span><span class="o">(),</span>
+      <span class="nl">child:</span> <span class="n">MyFlutterApp</span><span class="o">(),</span>
+   <span class="o">),</span>
+  <span class="o">);</span>
+<span class="o">}</span>
+</code></pre></div></div>
+<p>Your widgets would then have access to the database using <code class="highlighter-rouge">Provider.of&lt;MyDatabase&gt;(context)</code>.</p>
+
+<h3 id="a-more-complex-architecture">A more complex architecture</h3>
+<p>If you’re strict on keeping your business logic out of the widget layer, you probably use some dependency injection 
+framework like <code class="highlighter-rouge">kiwi</code> or <code class="highlighter-rouge">get_it</code> to instantiate services and view models. Creating a singleton instance of <code class="highlighter-rouge">MyDatabase</code>
+in your favorite dependency injection framework for flutter hence solves this problem for you.</p>
 
 
           
@@ -211,7 +217,7 @@ and re-run the code generation, a generated getter <code class="highlighter-roug
               Was this page helpful? Please
               
               
-              <a href="https://github.com/simolus3/moor/issues/new?body=Refers+to+the+documentation%3A+https%3A%2F%2Fmoor.simonbinder.eu%2Fdaos%2F">report an issue</a>
+              <a href="https://github.com/simolus3/moor/issues/new?body=Refers+to+the+documentation%3A+https%3A%2F%2Fmoor.simonbinder.eu%2Ffaq%2F">report an issue</a>
               if you have questions or run into problems.
           </span>
         </div>
