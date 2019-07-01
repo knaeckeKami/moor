@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.sitemaps.org/schemas/sitemap/0.9 http://www.sitemaps.org/schemas/sitemap/0.9/sitemap.xsd" xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+<url>
+<loc>https://moor.simonbinder.eu/404</loc>
+</url>
+<url>
+<loc>https://moor.simonbinder.eu/queries/custom</loc>
+</url>
+<url>
+<loc>https://moor.simonbinder.eu/daos/</loc>
+</url>
+<url>
+<loc>https://moor.simonbinder.eu/faq/</loc>
+</url>
+<url>
+<loc>https://moor.simonbinder.eu/getting-started/</loc>
+</url>
+<url>
+<loc>https://moor.simonbinder.eu/</loc>
+</url>
+<url>
+<loc>https://moor.simonbinder.eu/queries/joins</loc>
+</url>
+<url>
+<loc>https://moor.simonbinder.eu/migrations/</loc>
+</url>
+<url>
+<loc>https://moor.simonbinder.eu/transactions</loc>
+</url>
+<url>
+<loc>https://moor.simonbinder.eu/queries/</loc>
+</url>
+</urlset>

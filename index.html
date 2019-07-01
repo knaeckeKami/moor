@@ -19,7 +19,7 @@
 
   <div class="page-wrap">
     <div class="side-bar">
-      <a href="https://moor.simonbinder.eu" class="site-title fs-6 lh-tight">Moor</a>
+      <a href="https://moor.simonbinder.eu/" class="site-title fs-6 lh-tight">Moor</a>
       <span class="fs-3"><button class="js-main-nav-trigger navigation-list-toggle btn btn-outline" type="button" data-text-toggle="Hide">Menu</button></span>
       <div class="navigation main-nav js-main-nav">
         <nav role="navigation" aria-label="Main navigation">
@@ -187,6 +187,50 @@ and more!</p>
 
 <hr />
 
+<h1 id="features">Features</h1>
+<p>Moor contains a whole set of features that makes working with persistence much easier and safer.</p>
+
+<h2 id="declarative-tables">Declarative tables</h2>
+<p>With moor, you can declare your tables in pure dart without having to miss out on advanced sqlite
+features. Moor will take care of writing the <code class="highlighter-rouge">CREATE TABLE</code> statements when the database is created.</p>
+
+<h2 id="fluent-queries">Fluent queries</h2>
+<p>Thanks to the power of Dart build system, moor will let you write typesafe queries:</p>
+<div class="language-dart highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">Future</span><span class="o">&lt;</span><span class="n">User</span><span class="o">&gt;</span> <span class="n">userById</span><span class="o">(</span><span class="kt">int</span> <span class="n">id</span><span class="o">)</span> <span class="o">{</span>
+    <span class="k">return</span> <span class="o">(</span><span class="n">select</span><span class="o">(</span><span class="n">users</span><span class="o">)..</span><span class="na">where</span><span class="o">((</span><span class="n">user</span><span class="o">)</span> <span class="o">=&gt;</span> <span class="n">user</span><span class="o">.</span><span class="na">id</span><span class="o">.</span><span class="na">equals</span><span class="o">(</span><span class="n">id</span><span class="o">))).</span><span class="na">getSingle</span><span class="o">();</span>
+    <span class="c1">// runs SELECT * FROM users WHERE id = ?, automatically binds the parameter</span>
+    <span class="c1">// and parses the result row.</span>
+<span class="o">}</span>
+</code></pre></div></div>
+<p>No more hard to debug typos in sql, no more annoying to write mapping code - moor takes
+care of all the boring parts.</p>
+
+<h2 id="prefer-sql-moor-got-you-covered">Prefer SQL? Moor got you covered</h2>
+<p>Moor contains a powerful sql parser and analyzer, allowing it to create typesafe APIs for
+all your sql queries:</p>
+<div class="language-dart highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nd">@UseMoor</span><span class="o">(</span>
+  <span class="nl">tables:</span> <span class="o">[</span><span class="n">Categories</span><span class="o">],</span>
+  <span class="nl">queries:</span> <span class="o">{</span>
+    <span class="s">'categoryById'</span><span class="o">:</span> <span class="s">'SELECT * FROM categories WHERE id = :id'</span>
+  <span class="o">},</span>
+<span class="o">)</span>
+<span class="kd">class</span> <span class="nc">MyDatabase</span> <span class="kd">extends</span> <span class="n">_$MyDatabase</span> <span class="o">{</span>
+<span class="c1">// the _$MyDatabase class will have the categoryById(int id) and watchCategoryById(int id)</span>
+<span class="c1">// methods that execute the sql and parse its result into a generated class.</span>
+</code></pre></div></div>
+<p>All queries are validated and analyzed during build-time, so that moor can provide hints
+about potential errors quickly and generate efficient mapping code once.</p>
+
+<h2 id="auto-updating-streams">Auto-updating streams</h2>
+<p>For all your queries, moor can generate a <code class="highlighter-rouge">Stream</code> that will automatically emit new results
+whenever the underlying data changes. This is first-class feature that perfectly integrates
+with custom queries, daos and all the other features. Having an auto-updating single source
+of truth makes managing perstistent state much easier!</p>
+
+<h2 id="and-much-moor">And much moor…</h2>
+<p>Moor also supports transactions, DAOs, powerful helpers for migrations, batched inserts and
+many more features that makes writing persistence code much easier.</p>
+
 <h2 id="getting-started">Getting started</h2>
 <h3 id="adding-the-dependency">Adding the dependency</h3>
 <p>First, let’s add moor to your project’s <code class="highlighter-rouge">pubspec.yaml</code>.
@@ -266,25 +310,6 @@ follows:</p>
 now run your queries with fluent Dart code</p>
 
 <h2 id="writing-queries"><a href="https://moor.simonbinder.eu/queries">Writing queries</a></h2>
-
-<h2 id="todo-list">TODO-List</h2>
-<p>There are some sql features like <code class="highlighter-rouge">group by</code> statements which aren’t natively supported by moor yet.
-However, as moor supports <a href="https://moor.simonbinder.eu/queries/custom">custom sql queries</a>, there are easy
-workarounds for most entries on this list. Custom queries work well together with the regular api,
-as they integrate with stream queries and automatic result parsing.</p>
-<h3 id="limitations-at-the-moment">Limitations (at the moment)</h3>
-<p>These aren’t sorted by priority. If you have more ideas or want some features happening soon,
-let me know by <a href="https://github.com/simolus3/moor/issues/new">creating an issue</a>!</p>
-<ul>
-  <li>No <code class="highlighter-rouge">group by</code>, count, or window functions</li>
-  <li>Support other platforms:
-    <ul>
-      <li>VM apps</li>
-      <li>Web apps via <code class="highlighter-rouge">AlaSQL</code> or a different engine?</li>
-    </ul>
-  </li>
-  <li>References (can be expressed via custom constraints, see issue <a href="https://github.com/simolus3/moor/issues/14">#14</a>)</li>
-</ul>
 
 
 

@@ -19,7 +19,7 @@
 
   <div class="page-wrap">
     <div class="side-bar">
-      <a href="https://moor.simonbinder.eu" class="site-title fs-6 lh-tight">Moor</a>
+      <a href="https://moor.simonbinder.eu/" class="site-title fs-6 lh-tight">Moor</a>
       <span class="fs-3"><button class="js-main-nav-trigger navigation-list-toggle btn btn-outline" type="button" data-text-toggle="Hide">Menu</button></span>
       <div class="navigation main-nav js-main-nav">
         <nav role="navigation" aria-label="Main navigation">
@@ -191,6 +191,37 @@
 features like <code class="highlighter-rouge">GROUP BY</code> statements or window functions are not yet supported. You can
 use these features with custom statements. You don’t have to miss out on other benefits
 moor brings, though: Parsing the rows and query-streams also work on custom statements.</p>
+
+<h2 id="statements-with-a-generated-api">Statements with a generated api</h2>
+<p>Starting from version <code class="highlighter-rouge">1.5</code>, you can instruct moor to automatically generate a typesafe
+API for your select statements. At the moment, this feature is in an experimental state
+but it can already handle most statements (<code class="highlighter-rouge">select</code>, <code class="highlighter-rouge">update</code> and <code class="highlighter-rouge">delete</code>). Of course,
+you can still write custom sql manually. See the sections below for details.</p>
+
+<p>To use this feature, all you need to is define your queries in your <code class="highlighter-rouge">UseMoor</code> annotation:</p>
+<div class="language-dart highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nd">@UseMoor</span><span class="o">(</span>
+  <span class="nl">tables:</span> <span class="o">[</span><span class="n">Todos</span><span class="o">,</span> <span class="n">Categories</span><span class="o">],</span>
+  <span class="nl">queries:</span> <span class="o">{</span>
+    <span class="s">'categoriesWithCount'</span><span class="o">:</span>
+        <span class="s">'SELECT *, (SELECT COUNT(*) FROM todos WHERE category = c.id) AS "amount" FROM categories c;'</span>
+  <span class="o">},</span>
+<span class="o">)</span>
+<span class="kd">class</span> <span class="nc">MyDatabase</span> <span class="kd">extends</span> <span class="n">_$MyDatabase</span> <span class="o">{</span>
+  <span class="c1">// rest of class stays the same</span>
+<span class="o">}</span>
+</code></pre></div></div>
+<p>After running the build step again, moor will have written the <code class="highlighter-rouge">CategoriesWithCountResult</code> class for you -
+it will hold the result of your query. Also, the <code class="highlighter-rouge">_$MyDatabase</code> class from which you inherit will have the
+methods <code class="highlighter-rouge">categoriesWithCount</code> (which runs the query once) and <code class="highlighter-rouge">watchCategoriesWithCount</code> (which returns
+an auto-updating stream).</p>
+
+<p>Queries can have parameters in them by using the <code class="highlighter-rouge">?</code> or <code class="highlighter-rouge">:name</code> syntax. When your queries contain parameters,
+moor will figure out an appropriate type for them and include them in the generated methods. For instance,
+<code class="highlighter-rouge">'categoryById': 'SELECT * FROM categories WHERE id = :id'</code> will generate the method <code class="highlighter-rouge">categoryById(int id)</code>.</p>
+
+<p>You can also use <code class="highlighter-rouge">UPDATE</code> or <code class="highlighter-rouge">DELETE</code> statements here. Of course, this feature is also available for <a href="https://moor.simonbinder.eu/daos">daos</a>,
+and it perfectly integrates with auto-updating streams by analyzing what tables you’re reading from or
+writing to.</p>
 
 <h2 id="custom-select-statements">Custom select statements</h2>
 <p>You can issue custom queries by calling <code class="highlighter-rouge">customSelect</code> for a one-time query or
