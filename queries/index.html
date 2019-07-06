@@ -97,6 +97,8 @@
                 
                   
                 
+                  
+                
               </ul>
             
           </li>
@@ -138,6 +140,16 @@
           <li class="navigation-list-item">
             
             <a href="https://moor.simonbinder.eu/faq/" class="navigation-list-link">Frequently asked questions</a>
+            
+          </li>
+        
+      
+    
+      
+        
+          <li class="navigation-list-item">
+            
+            <a href="https://moor.simonbinder.eu/web" class="navigation-list-link">Web support</a>
             
           </li>
         
@@ -252,7 +264,7 @@ the statement will affect all rows in the table!</p>
 <h2 id="inserts">Inserts</h2>
 <p>You can very easily insert any valid object into tables:</p>
 <div class="language-dart highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">// returns the generated id</span>
-<span class="n">Future</span><span class="o">&lt;</span><span class="kt">int</span><span class="o">&gt;</span> <span class="n">addTodoEntry</span><span class="o">(</span><span class="n">Todo</span> <span class="n">entry</span><span class="o">)</span> <span class="o">{</span>
+<span class="n">Future</span><span class="o">&lt;</span><span class="kt">int</span><span class="o">&gt;</span> <span class="n">addTodoEntry</span><span class="o">(</span><span class="n">TodosCompanion</span> <span class="n">entry</span><span class="o">)</span> <span class="o">{</span>
   <span class="k">return</span> <span class="n">into</span><span class="o">(</span><span class="n">todos</span><span class="o">).</span><span class="na">insert</span><span class="o">(</span><span class="n">entry</span><span class="o">);</span>
 <span class="o">}</span>
 </code></pre></div></div>
@@ -288,6 +300,8 @@ otherwise.</p>
               <li>
                 <a href="https://moor.simonbinder.eu/queries/joins">Table joins</a>
               </li>
+              
+            
               
             
               

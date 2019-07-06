@@ -28,6 +28,9 @@
 <loc>https://moor.simonbinder.eu/transactions</loc>
 </url>
 <url>
+<loc>https://moor.simonbinder.eu/web</loc>
+</url>
+<url>
 <loc>https://moor.simonbinder.eu/queries/</loc>
 </url>
 </urlset>

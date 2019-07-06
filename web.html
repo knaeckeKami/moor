@@ -1,0 +1,276 @@
+<!DOCTYPE html>
+
+<html lang="en-us">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=Edge">
+
+  <title>Web support - Moor</title>
+  <link rel="stylesheet" href="https://moor.simonbinder.eu/assets/css/just-the-docs.css">
+  
+  <script type="text/javascript" src="https://moor.simonbinder.eu/assets/js/vendor/lunr.min.js"></script>
+  
+  <script type="text/javascript" src="https://moor.simonbinder.eu/assets/js/just-the-docs.js"></script>
+
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+</head>
+
+<body>
+
+  <div class="page-wrap">
+    <div class="side-bar">
+      <a href="https://moor.simonbinder.eu/" class="site-title fs-6 lh-tight">Moor</a>
+      <span class="fs-3"><button class="js-main-nav-trigger navigation-list-toggle btn btn-outline" type="button" data-text-toggle="Hide">Menu</button></span>
+      <div class="navigation main-nav js-main-nav">
+        <nav role="navigation" aria-label="Main navigation">
+  <ul class="navigation-list">
+    
+    
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+          <li class="navigation-list-item">
+            
+            <a href="https://moor.simonbinder.eu/" class="navigation-list-link">Home</a>
+            
+          </li>
+        
+      
+    
+      
+        
+          <li class="navigation-list-item">
+            
+            <a href="https://moor.simonbinder.eu/getting-started/" class="navigation-list-link">Getting started</a>
+            
+          </li>
+        
+      
+    
+      
+        
+          <li class="navigation-list-item">
+            
+            <a href="https://moor.simonbinder.eu/queries/" class="navigation-list-link">Writing queries</a>
+            
+              
+              <ul class="navigation-list-child-list ">
+                
+                  
+                
+                  
+                    <li class="navigation-list-item ">
+                      
+                      <a href="https://moor.simonbinder.eu/queries/custom" class="navigation-list-link">Custom queries</a>
+                      
+                    </li>
+                  
+                
+                  
+                    <li class="navigation-list-item ">
+                      
+                      <a href="https://moor.simonbinder.eu/queries/joins" class="navigation-list-link">Table joins</a>
+                      
+                    </li>
+                  
+                
+                  
+                
+                  
+                
+                  
+                
+                  
+                
+                  
+                
+                  
+                
+                  
+                
+                  
+                
+              </ul>
+            
+          </li>
+        
+      
+    
+      
+        
+          <li class="navigation-list-item">
+            
+            <a href="https://moor.simonbinder.eu/transactions" class="navigation-list-link">Transactions</a>
+            
+          </li>
+        
+      
+    
+      
+        
+          <li class="navigation-list-item">
+            
+            <a href="https://moor.simonbinder.eu/migrations/" class="navigation-list-link">Migrations</a>
+            
+          </li>
+        
+      
+    
+      
+        
+          <li class="navigation-list-item">
+            
+            <a href="https://moor.simonbinder.eu/daos/" class="navigation-list-link">Modularity with DAOs</a>
+            
+          </li>
+        
+      
+    
+      
+        
+          <li class="navigation-list-item">
+            
+            <a href="https://moor.simonbinder.eu/faq/" class="navigation-list-link">Frequently asked questions</a>
+            
+          </li>
+        
+      
+    
+      
+        
+          <li class="navigation-list-item active">
+            
+            <a href="https://moor.simonbinder.eu/web" class="navigation-list-link active">Web support</a>
+            
+          </li>
+        
+      
+    
+  </ul>
+</nav>
+
+      </div>
+      <footer role="contentinfo" class="site-footer">
+        <p class="text-small text-grey-dk-000 mb-0">This site uses <a href="https://github.com/pmarsceill/just-the-docs">Just the Docs</a>, a documentation theme for Jekyll.</p>
+      </footer>
+    </div>
+    <div class="main-content-wrap js-main-content" tabindex="0">
+      <div class="page-header">
+        <div class="main-content">
+          
+          <div class="search js-search">
+            <div class="search-input-wrap">
+              <input type="text" class="js-search-input search-input" tabindex="0" placeholder="Search Moor" aria-label="Search Moor" autocomplete="off">
+              <svg width="14" height="14" viewBox="0 0 28 28" xmlns="http://www.w3.org/2000/svg" class="search-icon"><title>Search</title><g fill-rule="nonzero"><path d="M17.332 20.735c-5.537 0-10-4.6-10-10.247 0-5.646 4.463-10.247 10-10.247 5.536 0 10 4.601 10 10.247s-4.464 10.247-10 10.247zm0-4c3.3 0 6-2.783 6-6.247 0-3.463-2.7-6.247-6-6.247s-6 2.784-6 6.247c0 3.464 2.7 6.247 6 6.247z"/><path d="M11.672 13.791L.192 25.271 3.02 28.1 14.5 16.62z"/></g></svg>
+            </div>
+            <div class="js-search-results search-results-wrap"></div>
+          </div>
+          
+          
+          <ul class="list-style-none text-small mt-md-1 mb-md-1 pb-4 pb-md-0 js-aux-nav aux-nav">
+            <li><a href="https://pub.dartlang.org/packages/moor_flutter"><img src="https://img.shields.io/pub/v/moor_flutter.svg" /></a></li>
+            <li><a href="https://github.com/simolus3/moor"><img src="https://img.shields.io/badge/repo-24292E.svg?logo=github&style=flat"></a></li>
+          </ul> 
+        </div>
+      </div>
+      <div class="main-content">
+        
+          
+        
+        <div id="main-content" class="page-content" role="main">
+          
+<span class="label label-green">Available from 1.6</span>
+
+
+<h1 id="web-support">Web support</h1>
+<p>Starting from moor <code class="highlighter-rouge">1.6</code>, you can experimentally use moor in Dart webapps. Moor web supports 
+Flutter Web, AngularDart, plain <code class="highlighter-rouge">dart:html</code> or any other web framework.</p>
+
+<h2 id="getting-started">Getting started</h2>
+<p>Instead of depending on <code class="highlighter-rouge">moor_flutter</code>, you need to depend on on <code class="highlighter-rouge">moor</code> directly. Apart from that, you can
+follow the <a href="https://moor.simonbinder.eu/getting-started">getting started guide</a>.
+Also, instead of using a <code class="highlighter-rouge">FlutterQueryExecutor</code> in your database classes, you can use a <code class="highlighter-rouge">WebDatabase</code> executor:</p>
+<div class="language-dart highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">import</span> <span class="s">'package:moor/moor_web.dart'</span><span class="o">;</span>
+
+<span class="nd">@UseMoor</span><span class="o">(</span><span class="nl">tables:</span> <span class="o">[</span><span class="n">Todos</span><span class="o">,</span> <span class="n">Categories</span><span class="o">])</span>
+<span class="kd">class</span> <span class="nc">MyDatabase</span> <span class="kd">extends</span> <span class="n">_$MyDatabase</span> <span class="o">{</span>
+  <span class="c1">// here, "app" is the name of the database - you can choose any name you want</span>
+  <span class="n">MyDatabase</span><span class="o">()</span> <span class="o">:</span> <span class="k">super</span><span class="o">(</span><span class="n">WebDatabase</span><span class="o">(</span><span class="s">'app'</span><span class="o">));</span>
+</code></pre></div></div>
+
+<p>Moor web is built on top of the <a href="https://github.com/kripken/sql.js/">sql.js</a> library, which you need to include:</p>
+<div class="language-html highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="cp">&lt;!doctype html&gt;</span>
+<span class="nt">&lt;html</span> <span class="na">lang=</span><span class="s">"en"</span><span class="nt">&gt;</span>
+<span class="nt">&lt;head&gt;</span>
+    <span class="nt">&lt;meta</span> <span class="na">charset=</span><span class="s">"UTF-8"</span><span class="nt">&gt;</span>
+    <span class="nt">&lt;script </span><span class="na">defer</span> <span class="na">src=</span><span class="s">"sql-wasm.js"</span><span class="nt">&gt;&lt;/script&gt;</span>
+    <span class="nt">&lt;script </span><span class="na">defer</span> <span class="na">src=</span><span class="s">"main.dart.js"</span> <span class="na">type=</span><span class="s">"application/javascript"</span><span class="nt">&gt;&lt;/script&gt;</span>
+<span class="nt">&lt;/head&gt;</span>
+<span class="nt">&lt;body&gt;&lt;/body&gt;</span>
+<span class="nt">&lt;/html&gt;</span>
+</code></pre></div></div>
+<p>You can grab the latest version of <code class="highlighter-rouge">sql-wasm.js</code> and <code class="highlighter-rouge">sql-wasm.wasm</code> <a href="https://github.com/kripken/sql.js/tree/master/dist">here</a>
+and copy them into your <code class="highlighter-rouge">web</code> folder.</p>
+
+<h2 id="sharing-code-between-native-apps-and-web">Sharing code between native apps and web</h2>
+<p>If you want to share your database code between native applications and webapps, just import the
+basic <code class="highlighter-rouge">moor</code> library and make the <code class="highlighter-rouge">QueryExecutor</code> configurable:</p>
+<div class="language-dart highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">// don't import moor_web.dart or moor_flutter/moor_flutter.dart in shared code</span>
+<span class="kn">import</span> <span class="s">'package:moor/moor.dart'</span><span class="o">;</span>
+
+<span class="nd">@UseMoor</span><span class="o">(</span><span class="cm">/* ... */</span><span class="o">)</span>
+<span class="kd">class</span> <span class="nc">SharedDatabase</span> <span class="kd">extends</span> <span class="n">_$MyDatabase</span> <span class="o">{</span>
+    <span class="n">SharedDatabase</span><span class="o">(</span><span class="n">QueryExecutor</span> <span class="n">e</span><span class="o">):</span> <span class="k">super</span><span class="o">(</span><span class="n">e</span><span class="o">);</span>
+<span class="o">}</span>
+</code></pre></div></div>
+<p>With native Flutter, you can create an instance of your database with</p>
+<div class="language-dart highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">import</span> <span class="s">'package:moor_flutter/moor_flutter.dart'</span><span class="o">;</span>
+<span class="n">SharedDatabase</span> <span class="nf">constructDb</span><span class="p">(</span><span class="o">)</span> <span class="o">{</span>
+    <span class="k">return</span> <span class="n">SharedDatabase</span><span class="o">(</span><span class="n">FlutterQueryExecutor</span><span class="o">.</span><span class="na">inDatabaseFolder</span><span class="o">(</span><span class="nl">path:</span> <span class="s">'db.sqlite'</span><span class="o">));</span>
+<span class="o">}</span>
+</code></pre></div></div>
+<p>On the web, you can use</p>
+<div class="language-dart highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">import</span> <span class="s">'package:moor/moor_web.dart'</span><span class="o">;</span>
+<span class="n">SharedDatabase</span> <span class="nf">constructDb</span><span class="p">(</span><span class="o">)</span> <span class="o">{</span>
+    <span class="k">return</span> <span class="n">SharedDatabase</span><span class="o">(</span><span class="n">WebDatabse</span><span class="o">(</span><span class="s">'db'</span><span class="o">));</span>
+<span class="o">}</span>
+</code></pre></div></div>
+
+<h2 id="debugging">Debugging</h2>
+<p>You can see all queries sent from moor to the underlying database engine by enabling the <code class="highlighter-rouge">logStatements</code>
+parameter on the <code class="highlighter-rouge">WebDatabase</code> - they will appear in the console.
+When you have assertions enabled (e.g. in debug mode), moor will expose the underlying 
+<a href="http://kripken.github.io/sql.js/documentation/#http://kripken.github.io/sql.js/documentation/class/Database.html">database</a>
+object via <code class="highlighter-rouge">window.db</code>. If you need to quickly run a query to check the state of the database, you can use
+<code class="highlighter-rouge">db.exec(sql)</code>.
+If you need to delete your databases, there stored using local storage. You can clear all your data with <code class="highlighter-rouge">localStorage.clear()</code>.</p>
+
+<p>Web support is experimental at the moment, so please <a href="https://github.com/simolus3/moor/issues/new">report all issues</a> you find.</p>
+
+
+          
+
+          <hr>
+          <span class="fs-2">
+              Was this page helpful? Please
+              
+              
+              <a href="https://github.com/simolus3/moor/issues/new?body=Refers+to+the+documentation%3A+https%3A%2F%2Fmoor.simonbinder.eu%2Fweb">report an issue</a>
+              if you have questions or run into problems.
+          </span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</body>
+</html>
