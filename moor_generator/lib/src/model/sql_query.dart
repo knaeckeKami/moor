@@ -309,7 +309,7 @@ class ResultColumn {
   /// The dart type that can store a result of this column.
   String get dartType {
     if (converter != null) {
-      return converter.mappedType.getDisplayString();
+      return converter.mappedType.getDisplayString(withNullability: false);
     } else {
       return dartTypeNames[type];
     }
@@ -439,7 +439,7 @@ class FoundVariable extends FoundElement {
   String get parameterType {
     String innerType;
     if (converter != null) {
-      innerType = converter.mappedType.getDisplayString();
+      innerType = converter.mappedType.getDisplayString(withNullability: false);
     } else {
       innerType = dartTypeNames[type] ?? 'dynamic';
     }

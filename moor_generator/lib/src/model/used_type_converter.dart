@@ -26,7 +26,7 @@ class UsedTypeConverter {
   /// A suitable typename to store an instance of the type converter used here.
   String get displayNameOfConverter {
     final sqlDartType = dartTypeNames[sqlType];
-    return 'TypeConverter<${mappedType.getDisplayString()}, $sqlDartType>';
+    return 'TypeConverter<${mappedType.getDisplayString(withNullability: false)}, $sqlDartType>';
   }
 
   /// Type converters are stored as static fields in the table that created
@@ -66,13 +66,13 @@ class InvalidTypeForEnumConverterException implements Exception {
   InvalidTypeForEnumConverterException(this.reason, this.invalidType);
 
   String get errorDescription {
-    return "Can't use the type ${invalidType.getDisplayString()} as an enum "
+    return "Can't use the type ${invalidType.getDisplayString(withNullability: false)} as an enum "
         'type: $reason';
   }
 
   @override
   String toString() {
     return 'Invalid type for enum converter: '
-        '${invalidType.getDisplayString()}. Reason: $reason';
+        '${invalidType.getDisplayString(withNullability: false)}. Reason: $reason';
   }
 }

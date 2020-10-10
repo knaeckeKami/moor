@@ -6,7 +6,7 @@ bool isFromMoor(DartType type) {
 }
 
 bool isColumn(DartType type) {
-  final name = type.getDisplayString();
+  final name = type.getDisplayString(withNullability: false);
 
   return isFromMoor(type) &&
       name.contains('Column') &&

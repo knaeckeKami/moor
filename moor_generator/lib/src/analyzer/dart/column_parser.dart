@@ -253,7 +253,7 @@ class ColumnParser {
     final object = annotations.singleWhere((e) {
       final value = e.computeConstantValue();
       return isFromMoor(value.type) &&
-          value.type.getDisplayString() == 'JsonKey';
+          value.type.getDisplayString(withNullability: false) == 'JsonKey';
     }, orElse: () => null);
 
     if (object == null) return null;

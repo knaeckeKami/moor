@@ -73,7 +73,7 @@ class DatabaseWriter {
 
     // Write fields to access an dao. We use a lazy getter for that.
     for (final dao in db.daos) {
-      final typeName = dao.getDisplayString();
+      final typeName = dao.getDisplayString(withNullability: false);
       final getterName = ReCase(typeName).camelCase;
       final databaseImplName = db.fromClass.name;
 
